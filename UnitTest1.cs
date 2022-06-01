@@ -11,7 +11,7 @@ namespace CEROSIFRTestVerktygSelenium
         [Fact]
         public void Test1()
         {
-            Console.WriteLine("HEJSAN");
+
         }
     }
 }
