@@ -6,10 +6,35 @@ using System.Collections.Generic;
 
 namespace CEROSIFRTestVerktygSelenium
 {
+
     public class UnitTest1
     {
+        public UnitTest1()
+        {
+            // Konstruktor för att
+            // Klicka på acceptera kakor varje gång vi kör ett test
+        }
+
         [Fact]
         public void Test1()
+        {
+
+        }
+
+        [Fact]
+        public void Test2()
+        {
+
+        }
+
+        [Fact]
+        public void Test3()
+        {
+
+        }
+
+        [Fact]
+        public void Test4()
         {
 
         }
