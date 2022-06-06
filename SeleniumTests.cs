@@ -7,9 +7,11 @@ using System.Collections.Generic;
 namespace CEROSIFRTestVerktygSelenium
 {
 
-    public class UnitTest1
+    
+
+    public class SeleniumTests
     {
-        public UnitTest1()
+        public SeleniumTests()
         {
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
