@@ -17,6 +17,7 @@ namespace CEROSIFRTestVerktygSelenium
         //ChromeDriver driver = new ChromeDriver();
         ChromeDriver driver = new ChromeDriver(@"C:\Users\simon\Downloads");
         DriverManager driverManager = new DriverManager();
+        string url = "https://www.coop.se/";
 
 
         public SeleniumTests()
@@ -25,32 +26,47 @@ namespace CEROSIFRTestVerktygSelenium
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
             // Båda click nedan funkar!
-
-            driver.Navigate().GoToUrl("https://www.komplett.se/");
+            driver.Navigate().GoToUrl(url);
+            driver.Manage().Window.FullScreen();
             Thread.Sleep(1000);
-            driver.FindElement(By.CssSelector(".btn-large")).Click();
+            driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
 
-            //driver.FindElement(By.XPath("//button[@class='btn-large primary']")).Click();
         }
 
         [Fact]
-        public void Test1()
+        public void FullscreenAndSearchForKetchup()
         {
-
-            IWebElement searchBar = driver.FindElement(By.Id("caasSearchInput"));
-            searchBar.SendKeys("Soundbar");
+            
+            IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
+            handlaOnline.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1000);
+            IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
+            searchBar.SendKeys("Ketchup");
             Thread.Sleep(2000);
             searchBar.SendKeys(Keys.Enter);
+            Thread.Sleep(1500);
+            driver.Quit();
+            driver.Dispose();
 
-            //driver.FindElement(By.CssSelector(".search-input__icon")).Click();
         }
 
-       /* [Fact]
-        public void Test2()
+        [Fact]
+        public void ThisIsTheFirstTestAgainJustForShowcase()
         {
-
+            IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
+            handlaOnline.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1000);
+            IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
+            searchBar.SendKeys("Ketchup");
+            Thread.Sleep(2000);
+            searchBar.SendKeys(Keys.Enter);
+            Thread.Sleep(1500);
+            driver.Quit();
+            driver.Dispose();
         }
-
+        /*
         [Fact]
         public void Test3()
         {
