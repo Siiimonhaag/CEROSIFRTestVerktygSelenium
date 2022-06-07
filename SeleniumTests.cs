@@ -5,7 +5,6 @@ using OpenQA.Selenium.Interactions;
 using WebDriverManager;
 using OpenQA.Selenium.Support;
 using Xunit;
-using System.Collections.Generic;
 using System.Threading;
 
 namespace CEROSIFRTestVerktygSelenium
