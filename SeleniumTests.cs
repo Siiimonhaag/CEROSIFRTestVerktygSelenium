@@ -18,7 +18,6 @@ namespace CEROSIFRTestVerktygSelenium
         DriverManager driverManager = new DriverManager();
         string url = "https://www.coop.se/";
 
-
         public SeleniumTests()
         {
 
@@ -27,7 +26,7 @@ namespace CEROSIFRTestVerktygSelenium
             // Båda click nedan funkar!
             driver.Navigate().GoToUrl(url);
             driver.Manage().Window.FullScreen();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
 
         }
