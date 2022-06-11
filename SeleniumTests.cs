@@ -132,9 +132,50 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        public void Test4()
+        public void Add10pcsDirectlyOnInputOfTheProduct()
         {
+            var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
+            HandlaOnline.Click();
 
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1000);
+
+            IWebElement Search = driver.FindElement(By.ClassName("Search-input"));
+            Search.SendKeys("Ädelost Blå eko");
+            Thread.Sleep(1500);
+
+            Search.SendKeys(Keys.Enter);
+            Thread.Sleep(2000);
+
+            IWebElement AddAmount = driver.FindElement(By.ClassName("AddToCart-input"));
+            AddAmount.SendKeys("10");
+            Thread.Sleep(2000);
+
+            IWebElement ClickOk = driver.FindElement(By.ClassName("AddToCart-input"));
+            ClickOk.SendKeys(Keys.Enter);
+            
+            Thread.Sleep(3000);
+           
+            //IWebElement AddZipCode = driver.FindElement(By.XPath("//input[@id='f47334d8-24d5-42eb-b6d7-5885fff53fa9-0']"));
+            //IWebElement AddZipCode = driver.FindElement(By.XPath("//input[@data-id='0']"));
+            IList<IWebElement> AddZipCode = driver.FindElements(By.CssSelector("input"));
+            //AddZipCode.SendKeys("4");
+            int stop = 0;
+                       
+            foreach (var box in AddZipCode)
+                {
+                    if (stop == 5)
+                        {
+                            break;
+                        }
+                    box.SendKeys("4");
+                    Thread.Sleep(500);
+                    stop++;
+                }
+                    
+            Thread.Sleep(2000);
+            driver.Quit();
+            
         }
     }
 }
