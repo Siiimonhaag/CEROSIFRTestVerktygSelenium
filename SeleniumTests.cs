@@ -119,16 +119,39 @@ namespace CEROSIFRTestVerktygSelenium
         }
         
         [Fact]
-        [Trait("Home page", "Products")]
+        [Trait("User Story", "ID 11")]
         public void PriceOnDiscountsAreProperlyCalculated()
         {
+            int quantity;
+            double price;
+            IWebElement product;
+
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
 
-            //var discountQuantity = driver.FindElement(By.CssSelector("span[class=Splash-pricePre]")).Text;
-            //testOutput.WriteLine(discountQuantity);
-            //driver.Quit();
-            //driver.Dispose();
+            IList<IWebElement> miniArticles = driver.FindElements(By.ClassName("ItemTeaser-container"));
+            foreach (var miniArticle in miniArticles)
+            {
+                if (miniArticle.Text.Contains("för"))
+                {
+                    product = miniArticle;
+                    string cleanText = miniArticle.Text.
+                        Remove(miniArticle.Text.IndexOf("r") + 1, 2).
+                        Replace("för", "").
+                        Replace(":-", "").
+                        Trim();
+                        
+                    int space = cleanText.IndexOf(" ");
+
+                    quantity = int.Parse(cleanText.Substring(0, space));
+                    price = double.Parse(cleanText.Substring(space + 1));
+
+                    testOutput.WriteLine("Kvantitet: " + quantity);
+                    testOutput.WriteLine("Pris: " + price);
+                    break;
+                }
+            }
+            
         }
 
         [Fact]
