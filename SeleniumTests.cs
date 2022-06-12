@@ -175,6 +175,21 @@ namespace CEROSIFRTestVerktygSelenium
                 }
             
             Thread.Sleep(2000);
+
+            IWebElement ClickTime = driver.FindElement(By.ClassName("TimeslotCell-content"));
+            ClickTime.SendKeys(Keys.Enter);
+            
+            Thread.Sleep(2000);
+
+            string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
+            string expected = "10";
+            Assert.Equal(expected, actual);
+            testOutput.WriteLine("Added 10pcs of 'Ädelost Blå Eko' in the shopping cart.\n" +
+                "Expected result: 10\n" +
+                "Actual result: " + actual);
+
+            Thread.Sleep(1000);
+
             driver.Quit();
             driver.Dispose();
         }
