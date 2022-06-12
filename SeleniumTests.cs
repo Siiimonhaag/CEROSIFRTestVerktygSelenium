@@ -121,7 +121,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
         
         [Fact]
-        [Trait("User Story", "ID 11")]
+        [Trait("User Story ID 11", "Div")]
         public void PriceOnDiscountsAreProperlyCalculated()
         {
             int quantity;
