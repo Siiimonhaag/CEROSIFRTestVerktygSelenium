@@ -19,7 +19,6 @@ namespace CEROSIFRTestVerktygSelenium
         DriverManager driverManager = new DriverManager();
         string url = "https://www.coop.se/";
 
-
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
 
@@ -53,7 +52,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 1","Input form, button, anchor")]
+        [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
             
