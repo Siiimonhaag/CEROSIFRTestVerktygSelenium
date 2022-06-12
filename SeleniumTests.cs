@@ -53,7 +53,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("ID 1","Input form & button")]
+        [Trait("User story ID 1","Input form, button, anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
             
@@ -100,10 +100,13 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement increaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             increaseQuantity.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
             string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
             string expected = "2";
             Assert.Equal(expected,actual);
+            testOutput.WriteLine("Added an extra 'Majskyckling' in the shopping cart.\n" +
+                "Expected result: 2\n" +
+                "Actual result: " + actual);
 
             for (int i = 0; i < 2; i++)
             {
@@ -132,6 +135,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
+        [Trait("User story ID 5","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
@@ -156,10 +160,7 @@ namespace CEROSIFRTestVerktygSelenium
             
             Thread.Sleep(3000);
            
-            //IWebElement AddZipCode = driver.FindElement(By.XPath("//input[@id='f47334d8-24d5-42eb-b6d7-5885fff53fa9-0']"));
-            //IWebElement AddZipCode = driver.FindElement(By.XPath("//input[@data-id='0']"));
             IList<IWebElement> AddZipCode = driver.FindElements(By.CssSelector("input"));
-            //AddZipCode.SendKeys("4");
             int stop = 0;
                        
             foreach (var box in AddZipCode)
@@ -172,10 +173,10 @@ namespace CEROSIFRTestVerktygSelenium
                     Thread.Sleep(500);
                     stop++;
                 }
-                    
+            
             Thread.Sleep(2000);
             driver.Quit();
-            
+            driver.Dispose();
         }
     }
 }
