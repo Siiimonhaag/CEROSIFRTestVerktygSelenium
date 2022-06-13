@@ -122,11 +122,32 @@ namespace CEROSIFRTestVerktygSelenium
         
         [Fact]
         [Trait("User Story ID 11", "Div")]
-        public void PriceOnDiscountsAreProperlyCalculated()
+        public void ShoppingCartShowCorrectPriceDiscount()
         {
-            int quantity;
-            double price;
-            IWebElement product;
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+            Thread.Sleep(3000);
+
+            int quantity = 0;
+            double price = 0;
+            
+            IWebElement addIcon;
+            IWebElement product = null;
+            IWebElement miniCart;
+
+            double subtractedPrice;
+            double totalPrice;
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
@@ -153,7 +174,22 @@ namespace CEROSIFRTestVerktygSelenium
                     break;
                 }
             }
-            
+
+            addIcon = product.FindElement(By.CssSelector("button[aria-label='Öka antal']"));
+
+            for (int i = 0; i < quantity; i++)
+            {
+                Thread.Sleep(1000);
+                addIcon.Click();
+            }
+
+            //Navigera till kundvagn
+            miniCart = driver.FindElement(By.CssSelector("button[aria-label='kundvagn']"));
+            Thread.Sleep(1000);
+            miniCart.Click();
+
+            //Hämta totalpriset och rabatterat pris
+
         }
 
         [Fact]
