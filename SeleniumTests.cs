@@ -3,7 +3,7 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Interactions;
 using WebDriverManager;
-using OpenQA.Selenium.Support;
+using OpenQA.Selenium.Support.UI;
 using Xunit;
 using Xunit.Abstractions;
 using System.Threading;
@@ -141,6 +141,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             int quantity = 0;
             double price = 0;
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
             
             IWebElement addIcon;
             IWebElement product = null;
@@ -151,11 +152,12 @@ namespace CEROSIFRTestVerktygSelenium
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
+            IList<IWebElement> miniArticles = 
+                wait.Until(driver => driver.FindElements(By.ClassName("ItemTeaser-container")));
 
-            IList<IWebElement> miniArticles = driver.FindElements(By.ClassName("ItemTeaser-container"));
             foreach (var miniArticle in miniArticles)
             {
-                if (miniArticle.Text.Contains("för"))
+                if(miniArticle.Text.Contains("för"))
                 {
                     product = miniArticle;
                     string cleanText = miniArticle.Text.
