@@ -141,7 +141,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             int quantity = 0;
             double price = 0;
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             
             IWebElement addIcon;
             IWebElement product = null;
@@ -152,8 +152,9 @@ namespace CEROSIFRTestVerktygSelenium
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
-            IList<IWebElement> miniArticles = 
-                wait.Until(driver => driver.FindElements(By.ClassName("ItemTeaser-container")));
+
+            IList<IWebElement> miniArticles = wait.Until(driver => 
+            driver.FindElements(By.ClassName("ItemTeaser-container")));
 
             foreach (var miniArticle in miniArticles)
             {
@@ -176,18 +177,17 @@ namespace CEROSIFRTestVerktygSelenium
                     break;
                 }
             }
-
-            addIcon = product.FindElement(By.CssSelector("button[aria-label='Öka antal']"));
-
+            
             for (int i = 0; i < quantity; i++)
             {
-                Thread.Sleep(1000);
+                addIcon = wait.Until(product =>
+                product.FindElement(By.CssSelector("button[aria-label='Öka antal']")));
                 addIcon.Click();
             }
 
             //Navigera till kundvagn
-            miniCart = driver.FindElement(By.CssSelector("button[aria-label='kundvagn']"));
-            Thread.Sleep(1000);
+            miniCart = wait.Until(driver => 
+            driver.FindElement(By.CssSelector("button[aria-label='kundvagn']")));
             miniCart.Click();
 
             //Hämta totalpriset och rabatterat pris
