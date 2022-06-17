@@ -55,7 +55,9 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
-            
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
             driver.Manage().Window.FullScreen();
@@ -198,6 +200,9 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 5","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
 
