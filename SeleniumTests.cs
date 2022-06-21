@@ -269,11 +269,30 @@ namespace CEROSIFRTestVerktygSelenium
             logIn.Click();
             driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+            Thread.Sleep(3000);
+
+            var onlineShop = driver.FindElement(By.LinkText("Recept"));
+            onlineShop.Click();
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(3000);
+
+            driver.Quit();
+            driver.Dispose();
         }
 
         [Fact]
         [Trait("User story ID 8", "Search")]
-        public void SearchForStoreThatsClose()
+        public void SearchForSpecificStoreInfo()
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
@@ -281,6 +300,46 @@ namespace CEROSIFRTestVerktygSelenium
             logIn.Click();
             driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+            Thread.Sleep(3000);
+
+            var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
+            onlineShop.Click();
+
+            IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=postnummer]"));
+            searchBar.SendKeys("Stora Coop Borås");
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(3000);
+
+            searchBar.SendKeys(Keys.Enter);
+            Thread.Sleep(3000);
+
+            var storeInfo = driver.FindElement(By.LinkText("Erbjudanden och butiksinfo"));
+            storeInfo.Click();
+            Thread.Sleep(3000);
+
+            var actual = driver.FindElement(By.XPath("//span[@class='Link2-text']")).Text;
+            string expected = "Enedalsg. 10, BORÅS";
+            Thread.Sleep(3000);
+
+            //Assert.Equal(expected, actual);
+
+            testOutput.WriteLine("We expect the result to be: " + expected + "\nAnd get: " + actual);
+
+
+            driver.Quit();
+            driver.Dispose();
+
+
         }
     }
 }
