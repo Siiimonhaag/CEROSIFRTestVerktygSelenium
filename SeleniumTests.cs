@@ -55,7 +55,9 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
-            
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
             driver.Manage().Window.FullScreen();
@@ -82,7 +84,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1500);
 
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Av Majskyckling']"));
             addProduct.Click();
@@ -90,12 +92,12 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement plusButton = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             plusButton.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
 
             IWebElement shoppingCart = driver.FindElement(By.XPath("//button[@aria-label='kundvagn']"));
             shoppingCart.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement increaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             increaseQuantity.Click();
@@ -111,7 +113,7 @@ namespace CEROSIFRTestVerktygSelenium
             {
                 IWebElement decreaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Minska antal']"));
                 decreaseQuantity.Click();
-                Thread.Sleep(500);
+                Thread.Sleep(750);
 
             }
             Thread.Sleep(2000);
@@ -147,8 +149,8 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement product = null;
             IWebElement miniCart;
 
-            double subtractedPrice;
-            double totalPrice;
+            //double subtractedPrice;
+            //double totalPrice;
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
@@ -195,9 +197,12 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 5","Input")]
+        [Trait("User story ID 3","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
             driver.Manage().Window.FullScreen();
@@ -251,6 +256,30 @@ namespace CEROSIFRTestVerktygSelenium
 
             driver.Quit();
             driver.Dispose();
+        }
+
+        [Fact]
+        [Trait("User story ID 5", "Search")]
+        public void NavigateWithSearchForRecipes()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+        }
+
+        [Fact]
+        [Trait("User story ID 8", "Search")]
+        public void SearchForStoreThatsClose()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
         }
     }
 }
