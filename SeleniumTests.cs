@@ -200,7 +200,6 @@ namespace CEROSIFRTestVerktygSelenium
         {
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
-
             driver.Manage().Window.FullScreen();
             Thread.Sleep(1000);
 
