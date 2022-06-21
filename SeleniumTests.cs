@@ -149,8 +149,8 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement product = null;
             IWebElement miniCart;
 
-            double subtractedPrice;
-            double totalPrice;
+            //double subtractedPrice;
+            //double totalPrice;
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
