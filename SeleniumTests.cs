@@ -84,7 +84,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1500);
 
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Av Majskyckling']"));
             addProduct.Click();
@@ -92,12 +92,12 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement plusButton = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             plusButton.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
 
             IWebElement shoppingCart = driver.FindElement(By.XPath("//button[@aria-label='kundvagn']"));
             shoppingCart.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement increaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             increaseQuantity.Click();
@@ -113,7 +113,7 @@ namespace CEROSIFRTestVerktygSelenium
             {
                 IWebElement decreaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Minska antal']"));
                 decreaseQuantity.Click();
-                Thread.Sleep(500);
+                Thread.Sleep(750);
 
             }
             Thread.Sleep(2000);
