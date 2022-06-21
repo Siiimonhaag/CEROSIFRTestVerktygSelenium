@@ -326,14 +326,13 @@ namespace CEROSIFRTestVerktygSelenium
             storeInfo.Click();
             Thread.Sleep(3000);
 
-            var actual = driver.FindElement(By.XPath("//span[@class='Link2-text']")).Text;
+            var actual = driver.FindElement(By.CssSelector("div[class=StoreSelector--headerDesktop] span[class=Link2-text]")).Text;
             string expected = "Enedalsg. 10, BORÅS";
             Thread.Sleep(3000);
 
-            //Assert.Equal(expected, actual);
+            Assert.Equal(expected, actual);
 
-            testOutput.WriteLine("We expect the result to be: " + expected + "\nAnd get: " + actual);
-
+            testOutput.WriteLine("Expected result: " + expected + "\nActual result: " + actual);
 
             driver.Quit();
             driver.Dispose();
