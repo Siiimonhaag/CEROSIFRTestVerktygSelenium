@@ -197,7 +197,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 5","Input")]
+        [Trait("User story ID 3","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
 
@@ -257,6 +257,30 @@ namespace CEROSIFRTestVerktygSelenium
 
             driver.Quit();
             driver.Dispose();
+        }
+
+        [Fact]
+        [Trait("User story ID 5", "Search")]
+        public void NavigateWithSearchForRecipes()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+        }
+
+        [Fact]
+        [Trait("User story ID 8", "Search")]
+        public void SearchForStoreThatsClose()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
         }
     }
 }
