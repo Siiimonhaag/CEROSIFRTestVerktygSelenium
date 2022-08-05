@@ -141,8 +141,6 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(3000);
 
-            int quantity = 0;
-            double price = 0;
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             
             IWebElement addIcon;
@@ -156,30 +154,55 @@ namespace CEROSIFRTestVerktygSelenium
             onlineShop.Click();
 
             IList<IWebElement> miniArticles = wait.Until(driver => 
-            driver.FindElements(By.ClassName("ItemTeaser-container")));
+            driver.FindElements(By.ClassName("ItemTeaser-content")));
 
             foreach (var miniArticle in miniArticles)
             {
                 if(miniArticle.Text.Contains("för"))
                 {
-                    product = miniArticle;
-                    string cleanText = miniArticle.Text.
-                        Remove(miniArticle.Text.IndexOf("r") + 1, 2).
-                        Replace("för", "").
-                        Replace(":-", "").
-                        Trim();
-                        
-                    int space = cleanText.IndexOf(" ");
-
-                    quantity = int.Parse(cleanText.Substring(0, space));
-                    price = double.Parse(cleanText.Substring(space + 1));
-
-                    testOutput.WriteLine("Kvantitet: " + quantity);
-                    testOutput.WriteLine("Pris: " + price);
+                    try
+                    {
+                        miniArticle.Click();
+                    }
+                    catch (StaleElementReferenceException e)
+                    {
+                        miniArticle.Click();
+                    }
                     break;
                 }
             }
-            
+            int quantity = 0;
+            int discountPrice = 0;
+            double originalPrice = 0;
+            for (int i = 0; i < 2; i++)
+            {
+                try
+                {
+                    string quantityText = wait.Until(driver =>
+                    driver.FindElement(By.ClassName("Splash-pricePre"))).Text.Substring(0, 1);
+                    quantity = int.Parse(quantityText.Trim());
+
+                    string discountPriceText = wait.Until(driver =>
+                    driver.FindElement(
+                        By.ClassName("Splash-priceLarge"))).Text.
+                        Replace(":-", "");
+                    discountPrice = int.Parse(discountPriceText.Trim());
+
+                    string originalPriceText = wait.Until(driver =>
+                    driver.FindElement(
+                        By.CssSelector("span[aria-label='Pris']"))).Text.
+                        Replace("/st", "").Replace(":", "");
+                    originalPrice = int.Parse(originalPriceText.Trim()) / 100;
+                }
+                catch (StaleElementReferenceException e)
+                {
+                }
+            }
+
+                testOutput.WriteLine("quantity: " + quantity);
+                testOutput.WriteLine("discountPrice: " + discountPrice);
+                testOutput.WriteLine("originalPrice: " + originalPrice);
+
             for (int i = 0; i < quantity; i++)
             {
                 addIcon = wait.Until(product =>
@@ -193,7 +216,6 @@ namespace CEROSIFRTestVerktygSelenium
             miniCart.Click();
 
             //Hämta totalpriset och rabatterat pris
-
         }
 
         [Fact]
