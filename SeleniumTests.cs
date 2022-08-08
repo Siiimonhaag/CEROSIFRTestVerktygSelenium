@@ -121,7 +121,7 @@ namespace CEROSIFRTestVerktygSelenium
             driver.Quit();
             driver.Dispose();
         }
-        
+
         [Fact]
         [Trait("User Story ID 11", "Div")]
         public void ShoppingCartShowCorrectPriceDiscount()
@@ -142,7 +142,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(3000);
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            
+
             IWebElement addIcon;
             IWebElement product = null;
             IWebElement miniCart;
@@ -153,12 +153,12 @@ namespace CEROSIFRTestVerktygSelenium
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
 
-            IList<IWebElement> miniArticles = wait.Until(driver => 
+            IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
-
+            Thread.Sleep(1000);
             foreach (var miniArticle in miniArticles)
             {
-                if(miniArticle.Text.Contains("för"))
+                if (miniArticle.Text.Contains("för"))
                 {
                     try
                     {
@@ -192,16 +192,30 @@ namespace CEROSIFRTestVerktygSelenium
                     driver.FindElement(
                         By.CssSelector("span[aria-label='Pris']"))).Text.
                         Replace("/st", "").Replace(":", "");
-                    originalPrice = int.Parse(originalPriceText.Trim()) / 100;
+                    originalPrice = double.Parse(originalPriceText.Trim()) / 100;
+
+                    //Om varan i fråga har pant: lägg till pant till originalpriset
+                    try
+                    {
+                        char[] recyclingInfo = driver.FindElement(
+                            By.ClassName("ItemInfo-extra")).Text.ToCharArray();
+                        int index = recyclingInfo.Length - 3;
+                        int incentive = int.Parse(recyclingInfo[index].ToString());
+
+                        originalPrice += incentive;
+                    }
+                    catch (NoSuchElementException)
+                    {
+                    }
                 }
-                catch (StaleElementReferenceException e)
+                catch (StaleElementReferenceException)
                 {
                 }
             }
 
-                testOutput.WriteLine("quantity: " + quantity);
-                testOutput.WriteLine("discountPrice: " + discountPrice);
-                testOutput.WriteLine("originalPrice: " + originalPrice);
+            testOutput.WriteLine("quantity: " + quantity);
+            testOutput.WriteLine("discountPrice: " + discountPrice);
+            testOutput.WriteLine("originalPrice: " + originalPrice);
 
             for (int i = 0; i < quantity; i++)
             {
@@ -211,11 +225,23 @@ namespace CEROSIFRTestVerktygSelenium
             }
 
             //Navigera till kundvagn
-            miniCart = wait.Until(driver => 
+            miniCart = wait.Until(driver =>
             driver.FindElement(By.CssSelector("button[aria-label='kundvagn']")));
+            Thread.Sleep(1000);
             miniCart.Click();
 
-            //Hämta totalpriset och rabatterat pris
+            //Hämta totalpriset och avdraget pris
+            IList<IWebElement> cartSummary;
+            do
+            {
+                cartSummary = wait.Until(driver =>
+                driver.FindElements(By.CssSelector("span[class=Cart-summaryItem]")));
+            } while (cartSummary.Count == 0);
+
+            string cartDiscountText = string.Join
+                ("", cartSummary[1].Text.Split(':', '-')).Replace("kr", "").Trim();
+
+            double subtraction = double.Parse(cartDiscountText) / 100;
         }
 
         [Fact]
