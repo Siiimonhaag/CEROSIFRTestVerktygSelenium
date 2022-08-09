@@ -143,37 +143,34 @@ namespace CEROSIFRTestVerktygSelenium
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            IWebElement addIcon;
-            IWebElement product = null;
-            IWebElement miniCart;
-
-            //double subtractedPrice;
-            //double totalPrice;
-
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
 
             IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
-            Thread.Sleep(1000);
+
             foreach (var miniArticle in miniArticles)
             {
+                Thread.Sleep(1000);
                 if (miniArticle.Text.Contains("för"))
                 {
                     try
                     {
                         miniArticle.Click();
                     }
-                    catch (StaleElementReferenceException e)
+                    catch (StaleElementReferenceException)
                     {
                         miniArticle.Click();
                     }
                     break;
                 }
             }
+
             int quantity = 0;
             int discountPrice = 0;
             double originalPrice = 0;
+            int incentive = 0;
+
             for (int i = 0; i < 2; i++)
             {
                 try
@@ -194,14 +191,16 @@ namespace CEROSIFRTestVerktygSelenium
                         Replace("/st", "").Replace(":", "");
                     originalPrice = double.Parse(originalPriceText.Trim()) / 100;
 
-                    //Om varan i fråga har pant: lägg till pant till originalpriset
+                    // Lägg till pantpris på rabatt och originalpriset om pant finns
                     try
                     {
                         char[] recyclingInfo = driver.FindElement(
                             By.ClassName("ItemInfo-extra")).Text.ToCharArray();
                         int index = recyclingInfo.Length - 3;
-                        int incentive = int.Parse(recyclingInfo[index].ToString());
+                        bool parse = 
+                            int.TryParse(recyclingInfo[index].ToString(), out incentive);
 
+                        discountPrice += incentive * quantity;
                         originalPrice += incentive;
                     }
                     catch (NoSuchElementException)
@@ -213,10 +212,7 @@ namespace CEROSIFRTestVerktygSelenium
                 }
             }
 
-            testOutput.WriteLine("quantity: " + quantity);
-            testOutput.WriteLine("discountPrice: " + discountPrice);
-            testOutput.WriteLine("originalPrice: " + originalPrice);
-
+            IWebElement addIcon;
             for (int i = 0; i < quantity; i++)
             {
                 addIcon = wait.Until(product =>
@@ -225,23 +221,48 @@ namespace CEROSIFRTestVerktygSelenium
             }
 
             //Navigera till kundvagn
+            IWebElement miniCart;
             miniCart = wait.Until(driver =>
             driver.FindElement(By.CssSelector("button[aria-label='kundvagn']")));
             Thread.Sleep(1000);
             miniCart.Click();
 
-            //Hämta totalpriset och avdraget pris
+            //Hämta avdraget pris och totalpriset
             IList<IWebElement> cartSummary;
             do
             {
                 cartSummary = wait.Until(driver =>
                 driver.FindElements(By.CssSelector("span[class=Cart-summaryItem]")));
             } while (cartSummary.Count == 0);
-
+            
             string cartDiscountText = string.Join
                 ("", cartSummary[1].Text.Split(':', '-')).Replace("kr", "").Trim();
 
-            double subtraction = double.Parse(cartDiscountText) / 100;
+            double discSubtraction = double.Parse(cartDiscountText) / 100;
+
+            // Validera om kundvagnen visar rätt prisavdrag
+            double expected = originalPrice * 2 - discountPrice;
+            double actual = discSubtraction;
+
+            Assert.Equal(expected, actual);
+
+            //Töm kundkorgen innan dispose
+            var emptyBasketButton = wait.Until(driver =>
+            driver.FindElement(By.CssSelector("button[data-test*=emptycartbutton]")));
+            Thread.Sleep(1200);
+            emptyBasketButton.Click();
+
+            var confirmButton = wait.Until(driver =>
+            driver.FindElement(By.XPath(
+                "//div[contains(@class, 'Cart-notice')]/div/button[contains(text(), 'Töm')]")));
+            Thread.Sleep(1200);
+            confirmButton.Click();
+
+            testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
+            Thread.Sleep(1200);
+
+            driver.Quit();
+            driver.Dispose();
         }
 
         [Fact]
