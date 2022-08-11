@@ -513,5 +513,73 @@ namespace CEROSIFRTestVerktygSelenium
 
 
         }
+
+        [Fact]
+        [Trait("User story ID 6", "input, a, button, h1, h3, p")]
+        public void SaveRecipe()
+        {
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+
+            Thread.Sleep(1500);
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            Thread.Sleep(1000);
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+
+            Thread.Sleep(1500);
+            IWebElement recept = driver.FindElement(By.LinkText("Recept"));
+            recept.Click();
+
+            Thread.Sleep(2000);
+            IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=filter]"));
+            searchBar.Click();
+
+            Thread.Sleep(1500);
+            searchBar.SendKeys("Sommar");
+
+            Thread.Sleep(1000);
+            searchBar.SendKeys(Keys.Enter);
+
+            Thread.Sleep(2000);
+            IWebElement choosenRecipe = driver.FindElement(By.XPath("//a[@href='/recept/zucchinitzatziki/']"));
+            choosenRecipe.Click();
+
+            Thread.Sleep(1000);
+            IList<IWebElement> likeButton = wait.Until(product =>
+               product.FindElements(By.CssSelector("button[title='Favorit']")));
+            likeButton[1].Click();
+
+            Thread.Sleep(1500);
+            IWebElement receptTwo = driver.FindElement(By.LinkText("Recept"));
+            receptTwo.Click();
+
+            Thread.Sleep(1500);
+            IWebElement savedRecipes = driver.FindElement(By.CssSelector("p[class*=u-marginAz]"));
+            savedRecipes.Click();
+
+            Thread.Sleep(1500);
+            var myRecipes = driver.FindElement(By.CssSelector("h1")).Text;
+            var mySavedRecipe = driver.FindElement(By.CssSelector("h3[class=u-marginAz]")).Text;
+            var expectedMyRecipe = "Mina recept";
+            var expectedMySavedRecipe = "Zucchinitzatziki";
+
+            Thread.Sleep(1000);
+            Assert.Equal(myRecipes, expectedMyRecipe);
+            Assert.Equal(mySavedRecipe, expectedMySavedRecipe);
+
+            IWebElement removeRecipe = driver.FindElement(By.CssSelector("button[title*='Ta bort']"));
+            removeRecipe.Click();
+
+            driver.Quit();
+            driver.Dispose();
+        }
     }
 }
