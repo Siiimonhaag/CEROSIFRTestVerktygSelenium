@@ -36,7 +36,7 @@ namespace CEROSIFRTestVerktygSelenium
         [Fact]
         public void FullscreenAndSearchForKetchup()
         {
-
+            
             IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
             handlaOnline.Click();
             driver.Manage().Window.FullScreen();
@@ -52,7 +52,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 1", "Input, Button, Anchor")]
+        [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
 
@@ -104,7 +104,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(2000);
             string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
             string expected = "2";
-            Assert.Equal(expected, actual);
+            Assert.Equal(expected,actual);
             testOutput.WriteLine("Added an extra 'Majskyckling' in the shopping cart.\n" +
                 "Expected result: 2\n" +
                 "Actual result: " + actual);
@@ -121,7 +121,7 @@ namespace CEROSIFRTestVerktygSelenium
             driver.Quit();
             driver.Dispose();
         }
-
+        
         [Fact]
         [Trait("User Story ID 11", "Div")]
         public void ShoppingCartShowCorrectPriceDiscount()
@@ -144,7 +144,7 @@ namespace CEROSIFRTestVerktygSelenium
             int quantity = 0;
             double price = 0;
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
+            
             IWebElement addIcon;
             IWebElement product = null;
             IWebElement miniCart;
@@ -155,12 +155,12 @@ namespace CEROSIFRTestVerktygSelenium
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
 
-            IList<IWebElement> miniArticles = wait.Until(driver =>
+            IList<IWebElement> miniArticles = wait.Until(driver => 
             driver.FindElements(By.ClassName("ItemTeaser-container")));
 
             foreach (var miniArticle in miniArticles)
             {
-                if (miniArticle.Text.Contains("för"))
+                if(miniArticle.Text.Contains("för"))
                 {
                     product = miniArticle;
                     string cleanText = miniArticle.Text.
@@ -168,7 +168,7 @@ namespace CEROSIFRTestVerktygSelenium
                         Replace("för", "").
                         Replace(":-", "").
                         Trim();
-
+                        
                     int space = cleanText.IndexOf(" ");
 
                     quantity = int.Parse(cleanText.Substring(0, space));
@@ -179,7 +179,7 @@ namespace CEROSIFRTestVerktygSelenium
                     break;
                 }
             }
-
+            
             for (int i = 0; i < quantity; i++)
             {
                 addIcon = wait.Until(product =>
@@ -188,7 +188,7 @@ namespace CEROSIFRTestVerktygSelenium
             }
 
             //Navigera till kundvagn
-            miniCart = wait.Until(driver =>
+            miniCart = wait.Until(driver => 
             driver.FindElement(By.CssSelector("button[aria-label='kundvagn']")));
             miniCart.Click();
 
@@ -197,7 +197,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 3", "Input")]
+        [Trait("User story ID 3","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
 
@@ -221,28 +221,28 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement ClickOk = driver.FindElement(By.ClassName("AddToCart-input"));
             ClickOk.SendKeys(Keys.Enter);
-
+            
             Thread.Sleep(3000);
-
+           
             IList<IWebElement> AddZipCode = driver.FindElements(By.CssSelector("input"));
             int stop = 0;
-
+                       
             foreach (var box in AddZipCode)
-            {
-                if (stop == 5)
                 {
-                    break;
+                    if (stop == 5)
+                        {
+                            break;
+                        }
+                    box.SendKeys("4");
+                    Thread.Sleep(500);
+                    stop++;
                 }
-                box.SendKeys("4");
-                Thread.Sleep(500);
-                stop++;
-            }
-
+            
             Thread.Sleep(2000);
 
             IWebElement ClickTime = driver.FindElement(By.ClassName("TimeslotCell-content"));
             ClickTime.SendKeys(Keys.Enter);
-
+            
             Thread.Sleep(2000);
 
             string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
@@ -338,74 +338,6 @@ namespace CEROSIFRTestVerktygSelenium
             driver.Dispose();
 
 
-        }
-
-        [Fact]
-        [Trait("User story ID 6", "input, a, button, h1, h3, p")]
-        public void SaveRecipe()
-        {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-
-            Thread.Sleep(1500);
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            Thread.Sleep(1000);
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-
-            Thread.Sleep(1500);
-            IWebElement recept = driver.FindElement(By.LinkText("Recept"));
-            recept.Click();
-            
-            Thread.Sleep(2000);
-            IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=filter]"));
-            searchBar.Click();
-
-            Thread.Sleep(1500);
-            searchBar.SendKeys("Sommar");
-
-            Thread.Sleep(1000);
-            searchBar.SendKeys(Keys.Enter);
-
-            Thread.Sleep(2000);
-            IWebElement choosenRecipe = driver.FindElement(By.XPath("//a[@href='/recept/zucchinitzatziki/']"));
-            choosenRecipe.Click();
-
-            Thread.Sleep(1000);
-            IList<IWebElement> likeButton = wait.Until(product =>
-               product.FindElements(By.CssSelector("button[title='Favorit']")));
-            likeButton[1].Click();
-
-            Thread.Sleep(1500);
-            IWebElement receptTwo = driver.FindElement(By.LinkText("Recept"));
-            receptTwo.Click();
-
-            Thread.Sleep(1500);
-            IWebElement savedRecipes = driver.FindElement(By.CssSelector("p[class*=u-marginAz]"));
-            savedRecipes.Click();
-
-            Thread.Sleep(1500);
-            var myRecipes = driver.FindElement(By.CssSelector("h1")).Text;
-            var mySavedRecipe = driver.FindElement(By.CssSelector("h3[class=u-marginAz]")).Text;
-            var expectedMyRecipe = "Mina recept";
-            var expectedMySavedRecipe = "Zucchinitzatziki";
-
-            Thread.Sleep(1000);
-            Assert.Equal(myRecipes, expectedMyRecipe);
-            Assert.Equal(mySavedRecipe, expectedMySavedRecipe);
-
-            IWebElement removeRecipe = driver.FindElement(By.CssSelector("button[title*='Ta bort']"));
-            removeRecipe.Click();
-
-            driver.Quit();
-            driver.Dispose();
         }
     }
 }
