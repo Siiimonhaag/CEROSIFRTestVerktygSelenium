@@ -359,6 +359,111 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
+        [Trait("User story ID 7", "Input, Button, Anchor")]
+        public void AddingIngredientsFromRecipeIsVisibleInShoppingList()
+        {
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+            Thread.Sleep(3000);
+
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+
+            // Navigera till recept
+            var recipeTab = wait.Until(driver =>
+            driver.FindElement(By.LinkText("Recept")));
+            Thread.Sleep(1200);
+            recipeTab.Click();
+
+            // Sök efter pasta och välj första bästa alternativ
+            var pastaFilter = wait.Until(driver =>
+            driver.FindElement(By.LinkText("Pasta")));
+            Thread.Sleep(1200);
+            pastaFilter.Click();
+
+            var recipeArticle = wait.Until(driver =>
+            driver.FindElement(By.CssSelector("article a")));
+            Thread.Sleep(1200);
+            recipeArticle.Click();
+            // Räkna upp hur många ingredienser receptet har
+            var quantityElement = wait.Until(driver =>
+            driver.FindElement(By.XPath(
+                "//li[contains(@class,'List-heading')]/span[contains(text(),'(')]")));
+            int[] parentheses =
+            {
+                quantityElement.Text.IndexOf("(") + 1,
+                quantityElement.Text.IndexOf(")") - 1
+            };
+
+            int recipeQuantity = int.Parse
+                (quantityElement.Text.Substring(parentheses[0], parentheses[1]));
+
+            // Lägg till i ett klick alla ingredienser till en inköpslista
+            var addAllIngredients = wait.Until(driver =>
+            driver.FindElement(By.CssSelector("div[class='js-shoppingList'] button")));
+
+            /*
+             * Selenium kan inte genom vanliga medel klicka på knappen pga av att elementet
+             * är inne i ett "gömt" tillstånd, trots att den är fullt synlig och klickbar för
+             * en användare. Lösningen blir att låta Javascript klicka åt oss istället för Selenium
+             */
+            driver.ExecuteScript
+                ("document.querySelector('div[class=\"js-shoppingList\"] button').click()");
+
+            var newShoppingListButton = wait.Until(driver =>
+            driver.FindElement(By.XPath("//button[text()='+ Lägg till i ny lista']")));
+            Thread.Sleep(1200);
+            newShoppingListButton.Click();
+
+            var closeWindow = wait.Until(driver =>
+            driver.FindElement(By.CssSelector("button[class*='close']")));
+            Thread.Sleep(1200);
+            closeWindow.Click();
+            // Navigera till testkontot med inköpslistor
+            driver.ExecuteScript("document.querySelector(\"a[title = 'Mitt Coop']\").click()");
+
+            wait.Until(driver =>
+            driver.FindElement(By.LinkText("Mina inköpslistor"))).Click();
+            Thread.Sleep(1200);
+            IList<IWebElement> shoppingList = wait.Until(driver =>
+            driver.FindElements(By.ClassName("Checkbox")));
+            // Validera testet med att kolla om det finns rätt antal ingredienser i listan kontra receptet
+            int expected = recipeQuantity;
+            int actual = shoppingList.Count;
+
+            Assert.Equal(expected, actual);
+
+            testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
+            //Efter testet: Radera inköpslistan för att hålla testkontot städat
+            wait.Until(driver =>
+            driver.FindElement(By.XPath("//button[text()=\"Redigera\"]"))).Click();
+
+            Thread.Sleep(1200);
+
+            wait.Until(driver =>
+            driver.FindElement(By.XPath("//button[text()=\"Ta bort inköpslistan\"]"))).Click();
+
+            Thread.Sleep(1200);
+
+            wait.Until(driver =>
+            driver.FindElement(By.XPath("//button[text()=\"Radera\"]"))).Click();
+
+            Thread.Sleep(500);
+
+            driver.Quit();
+            driver.Dispose();
+        }
+        [Fact]
         [Trait("User story ID 8", "Search")]
         public void SearchForSpecificStoreInfo()
         {
