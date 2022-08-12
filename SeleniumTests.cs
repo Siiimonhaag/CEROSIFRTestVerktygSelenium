@@ -338,10 +338,57 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(3000);
 
+            driver.Manage().Window.FullScreen();
+
             var onlineShop = driver.FindElement(By.LinkText("Recept"));
             onlineShop.Click();
 
-            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
+
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.LinkText("Huvudrätt")).Click();
+
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.XPath("//button/span[text()='Vegetariskt/veganskt']")).Click();
+
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.LinkText("Veganskt")).Click();
+
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.XPath("//button/span[text()='Svårighetsgrad']")).Click();
+
+            Thread.Sleep(1500);
+
+            driver.FindElement(By.LinkText("Snabb")).Click();
+
+            Thread.Sleep(1500);
+
+            //Scroll into view for the header
+            driver.ExecuteScript("document.querySelector(\"div[class*='Hero-content']\").scrollIntoView()");
+
+            Thread.Sleep(1500);
+
+            var result = driver.FindElement(By.XPath("//p/b"));
+
+            Assert.NotNull(result.Text);
+
+            var productView = driver.FindElement(By.CssSelector("article a[href='/recept/vegetarisk-chiligryta/']"));
+
+            testOutput.WriteLine(result.Text);
+
+            Thread.Sleep(1500);
+
+            productView.Click();
+
+            Thread.Sleep(1500);
+
+            //driver.Manage().Window.FullScreen();
             Thread.Sleep(3000);
 
             driver.Quit();
