@@ -1,28 +1,39 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using WebDriverManager;
+using OpenQA.Selenium.Support.UI;
+using Xunit;
+using Xunit.Abstractions;
+using System.Threading;
+using System.Collections.Generic;
 
 namespace CEROSIFRTestVerktygSelenium
 {
     public class Helper
     {
-        public static void StaleClick(IWebElement element)
+        public ChromeDriver driver;
+        public Helper(ChromeDriver _driver)
         {
-            int attempts = 0;
-            do
-            {
-                try
-                {
-                    element.Click();
-                }
-                catch (StaleElementReferenceException e)
-                {
-                }
-                attempts++;
-            } while (attempts != 2);
+            driver = _driver;
+        }
+        public void LogInToWebsite(string email, string password)
+        {
+            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
+            logIn.Click();
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys(email);
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys(password);
+
+            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
+            login2.Click();
+            Thread.Sleep(3000);
         }
     }
 }

@@ -126,20 +126,9 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User Story ID 11", "Div")]
         public void ShoppingCartShowCorrectPriceDiscount()
         {
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            driver.Manage().Window.FullScreen();
-            Thread.Sleep(1500);
+            Helper helper = new Helper(driver);
 
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(3000);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
@@ -148,10 +137,10 @@ namespace CEROSIFRTestVerktygSelenium
 
             IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
-
+            
             foreach (var miniArticle in miniArticles)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(1200);
                 if (miniArticle.Text.Contains("för"))
                 {
                     try
@@ -202,6 +191,7 @@ namespace CEROSIFRTestVerktygSelenium
 
                         discountPrice += incentive * quantity;
                         originalPrice += incentive;
+                        testOutput.WriteLine("originalPrice with incentive: " + originalPrice);
                     }
                     catch (NoSuchElementException)
                     {
@@ -243,7 +233,7 @@ namespace CEROSIFRTestVerktygSelenium
             // Validera om kundvagnen visar rätt prisavdrag
             double expected = originalPrice * 2 - discountPrice;
             double actual = discSubtraction;
-
+            testOutput.WriteLine("originalPrice multiplied by 2: " + originalPrice * 2);
             Assert.Equal(expected, actual);
 
             //Töm kundkorgen innan dispose
