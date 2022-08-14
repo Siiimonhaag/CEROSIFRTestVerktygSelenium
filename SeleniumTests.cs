@@ -543,6 +543,8 @@ namespace CEROSIFRTestVerktygSelenium
 
             var storeInfo = driver.FindElement(By.LinkText("Erbjudanden och butiksinfo"));
             storeInfo.Click();
+
+            driver.Manage().Window.FullScreen();
             Thread.Sleep(3000);
 
             var actual = driver.FindElement(By.CssSelector("div[class=StoreSelector--headerDesktop] span[class=Link2-text]")).Text;
@@ -555,8 +557,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             driver.Quit();
             driver.Dispose();
-
-
         }
 
         [Fact]
