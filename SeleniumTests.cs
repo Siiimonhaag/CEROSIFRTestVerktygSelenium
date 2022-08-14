@@ -162,10 +162,13 @@ namespace CEROSIFRTestVerktygSelenium
             double originalPrice = 0;
             int incentive = 0;
 
+            driver.Manage().Window.FullScreen();
+
             for (int i = 0; i < 2; i++)
             {
                 try
                 {
+                    
                     Thread.Sleep(1200);
                     string quantityText = wait.Until(driver =>
                     driver.FindElement(By.ClassName("Splash-pricePre"))).Text.Substring(0, 1);
@@ -522,6 +525,8 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
             login2.Click();
+
+            driver.Manage().Window.FullScreen();
             Thread.Sleep(3000);
 
             var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
