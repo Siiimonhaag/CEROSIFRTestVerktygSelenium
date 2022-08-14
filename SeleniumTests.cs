@@ -86,7 +86,7 @@ namespace CEROSIFRTestVerktygSelenium
             searchBar.SendKeys(Keys.Enter);
             Thread.Sleep(3000);
 
-            IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Av Majskyckling']"));
+            IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Majskyckling']"));
             addProduct.Click();
             Thread.Sleep(2500);
 
@@ -129,6 +129,9 @@ namespace CEROSIFRTestVerktygSelenium
             Helper helper = new Helper(driver);
 
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
@@ -345,10 +348,13 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(3000);
 
             driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
 
             var onlineShop = driver.FindElement(By.LinkText("Recept"));
             onlineShop.Click();
 
+            Thread.Sleep(1500);
+            driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
 
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
@@ -423,6 +429,8 @@ namespace CEROSIFRTestVerktygSelenium
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             // Navigera till recept
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
             var recipeTab = wait.Until(driver =>
             driver.FindElement(By.LinkText("Recept")));
             Thread.Sleep(1200);
@@ -438,6 +446,9 @@ namespace CEROSIFRTestVerktygSelenium
             driver.FindElement(By.CssSelector("article a")));
             Thread.Sleep(1200);
             recipeArticle.Click();
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
             // Räkna upp hur många ingredienser receptet har
             var quantityElement = wait.Until(driver =>
             driver.FindElement(By.XPath(
@@ -578,8 +589,11 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
             login2.Click();
+            Thread.Sleep(1000);
 
-            Thread.Sleep(1500);
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(3000);
+
             IWebElement recept = driver.FindElement(By.LinkText("Recept"));
             recept.Click();
 
@@ -597,6 +611,8 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement choosenRecipe = driver.FindElement(By.XPath("//a[@href='/recept/zucchinitzatziki/']"));
             choosenRecipe.Click();
 
+            driver.Manage().Window.FullScreen();
+
             Thread.Sleep(1000);
             IList<IWebElement> likeButton = wait.Until(product =>
                product.FindElements(By.CssSelector("button[title='Favorit']")));
@@ -605,6 +621,9 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1500);
             IWebElement receptTwo = driver.FindElement(By.LinkText("Recept"));
             receptTwo.Click();
+
+            Thread.Sleep(1500);
+            driver.Manage().Window.FullScreen();
 
             Thread.Sleep(1500);
             IWebElement savedRecipes = driver.FindElement(By.CssSelector("p[class*=u-marginAz]"));
