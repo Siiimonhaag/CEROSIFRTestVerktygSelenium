@@ -135,6 +135,8 @@ namespace CEROSIFRTestVerktygSelenium
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
 
+            Thread.Sleep(1200);
+
             IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
             
@@ -164,6 +166,7 @@ namespace CEROSIFRTestVerktygSelenium
             {
                 try
                 {
+                    Thread.Sleep(1200);
                     string quantityText = wait.Until(driver =>
                     driver.FindElement(By.ClassName("Splash-pricePre"))).Text.Substring(0, 1);
                     quantity = int.Parse(quantityText.Trim());
