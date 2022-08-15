@@ -27,9 +27,9 @@ namespace CEROSIFRTestVerktygSelenium
             // Båda click nedan funkar!
             testOutput = _testOutput;
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(3000);
+            Thread.Sleep(5000);
             driver.Manage().Window.FullScreen();
-            Thread.Sleep(2000);
+            Thread.Sleep(1500);
             driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
 
         }
