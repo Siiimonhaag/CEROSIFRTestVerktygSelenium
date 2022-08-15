@@ -70,7 +70,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
             searchBar.SendKeys("Kronfågel Majskyckling");
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
 
             searchBar.SendKeys(Keys.Enter);
             Thread.Sleep(3000);
