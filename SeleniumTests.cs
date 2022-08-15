@@ -15,7 +15,7 @@ namespace CEROSIFRTestVerktygSelenium
     public class SeleniumTests
     {
         ITestOutputHelper testOutput;
-        ChromeDriver driver = new ChromeDriver();
+        IWebDriver driver = new ChromeDriver();
         DriverManager driverManager = new DriverManager();
         string url = "https://www.coop.se/";
 
@@ -127,7 +127,7 @@ namespace CEROSIFRTestVerktygSelenium
         public void ShoppingCartShowCorrectPriceDiscount()
         {
             Helper helper = new Helper(driver);
-
+            Actions actions = new Actions(driver);
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             driver.Manage().Window.FullScreen();
@@ -140,23 +140,32 @@ namespace CEROSIFRTestVerktygSelenium
 
             Thread.Sleep(1200);
 
+            driver.Manage().Window.FullScreen();
+
+            
+
             IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
-            
-            foreach (var miniArticle in miniArticles)
+
+            for (int i = 0; i < miniArticles.Count; i++)
             {
-                Thread.Sleep(1200);
-                if (miniArticle.Text.Contains("för"))
+                try
                 {
-                    try
+                    if (miniArticles[i].Text.Contains("för") &&
+                    miniArticles[i].Text.Contains("Medlemspris") == false)
                     {
-                        miniArticle.Click();
+                        actions.ScrollToElement(miniArticles[i]);
+                        actions.Perform();
+                        Thread.Sleep(1200);
+                        miniArticles[i].Click();
+                        break;
                     }
-                    catch (StaleElementReferenceException)
-                    {
-                        miniArticle.Click();
-                    }
-                    break;
+                }
+                catch (StaleElementReferenceException)
+                {
+                    miniArticles = wait.Until(driver =>
+                    driver.FindElements(By.ClassName("ItemTeaser-content")));
+                    i = 0;
                 }
             }
 
@@ -240,7 +249,7 @@ namespace CEROSIFRTestVerktygSelenium
             double discSubtraction = double.Parse(cartDiscountText) / 100;
 
             // Validera om kundvagnen visar rätt prisavdrag
-            double expected = originalPrice * 2 - discountPrice;
+            double expected = Math.Round(originalPrice * quantity - discountPrice, 2);
             double actual = discSubtraction;
             testOutput.WriteLine("originalPrice multiplied by 2: " + originalPrice * 2);
             Assert.Equal(expected, actual);
@@ -382,7 +391,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1500);
 
             //Scroll into view for the header
-            driver.ExecuteScript("document.querySelector(\"div[class*='Hero-content']\").scrollIntoView()");
+            //driver.ExecuteScript("document.querySelector(\"div[class*='Hero-content']\").scrollIntoView()");
 
             Thread.Sleep(1500);
 
@@ -471,8 +480,8 @@ namespace CEROSIFRTestVerktygSelenium
              * är inne i ett "gömt" tillstånd, trots att den är fullt synlig och klickbar för
              * en användare. Lösningen blir att låta Javascript klicka åt oss istället för Selenium
              */
-            driver.ExecuteScript
-                ("document.querySelector('div[class=\"js-shoppingList\"] button').click()");
+            //driver.ExecuteScript
+                //("document.querySelector('div[class=\"js-shoppingList\"] button').click()");
 
             var newShoppingListButton = wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()='+ Lägg till i ny lista']")));
@@ -484,7 +493,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1200);
             closeWindow.Click();
             // Navigera till testkontot med inköpslistor
-            driver.ExecuteScript("document.querySelector(\"a[title = 'Mitt Coop']\").click()");
+            //driver.ExecuteScript("document.querySelector(\"a[title = 'Mitt Coop']\").click()");
 
             wait.Until(driver =>
             driver.FindElement(By.LinkText("Mina inköpslistor"))).Click();

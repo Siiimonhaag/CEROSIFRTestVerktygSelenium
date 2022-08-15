@@ -13,8 +13,8 @@ namespace CEROSIFRTestVerktygSelenium
 {
     public class Helper
     {
-        public ChromeDriver driver;
-        public Helper(ChromeDriver _driver)
+        public IWebDriver driver;
+        public Helper(IWebDriver _driver)
         {
             driver = _driver;
         }
