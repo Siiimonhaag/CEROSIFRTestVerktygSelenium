@@ -15,23 +15,30 @@ namespace CEROSIFRTestVerktygSelenium
     public class SeleniumTests
     {
         ITestOutputHelper testOutput;
-        IWebDriver driver = new ChromeDriver();
-        DriverManager driverManager = new DriverManager();
+        ChromeOptions options = new ChromeOptions();
+        IWebDriver driver;
         string url = "https://www.coop.se/";
 
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
-
+            options.AddArguments("--start-fullscreen");
+            driver = new ChromeDriver(options);
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
             // Båda click nedan funkar!
             testOutput = _testOutput;
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(5000);
-            driver.Manage().Window.FullScreen();
-            Thread.Sleep(1500);
-            driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
-
+            try
+            {
+                Thread.Sleep(3000);
+                driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
+            }
+            catch (NoSuchWindowException)
+            {
+                driver.Navigate().Refresh();
+                Thread.Sleep(3000);
+                driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
+            }
         }
 
         [Fact]
@@ -43,7 +50,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
-            driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
 
             IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
@@ -59,7 +65,7 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
             handlaOnline.Click();
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1000);
 
             IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
@@ -113,7 +119,6 @@ namespace CEROSIFRTestVerktygSelenium
             Actions actions = new Actions(driver);
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
-            driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -122,10 +127,6 @@ namespace CEROSIFRTestVerktygSelenium
             onlineShop.Click();
 
             Thread.Sleep(1200);
-
-            driver.Manage().Window.FullScreen();
-
-            
 
             IList<IWebElement> miniArticles = wait.Until(driver =>
             driver.FindElements(By.ClassName("ItemTeaser-content")));
@@ -157,7 +158,7 @@ namespace CEROSIFRTestVerktygSelenium
             double originalPrice = 0;
             int incentive = 0;
 
-            driver.Manage().Window.FullScreen();
+            
 
             for (int i = 0; i < 2; i++)
             {
@@ -265,7 +266,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1000);
 
             IWebElement Search = driver.FindElement(By.ClassName("Search-input"));
@@ -326,7 +327,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
 
             IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
@@ -339,14 +340,14 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(3000);
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
 
             var onlineShop = driver.FindElement(By.LinkText("Recept"));
             onlineShop.Click();
 
             Thread.Sleep(1500);
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
 
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
@@ -392,7 +393,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             Thread.Sleep(1500);
 
-            //driver.Manage().Window.FullScreen();
             Thread.Sleep(3000);
 
             driver.Quit();
@@ -405,7 +405,7 @@ namespace CEROSIFRTestVerktygSelenium
         {
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
 
             IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
@@ -421,7 +421,7 @@ namespace CEROSIFRTestVerktygSelenium
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             // Navigera till recept
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
             var recipeTab = wait.Until(driver =>
             driver.FindElement(By.LinkText("Recept")));
@@ -439,7 +439,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1200);
             recipeArticle.Click();
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
             // Räkna upp hur många ingredienser receptet har
             var quantityElement = wait.Until(driver =>
@@ -517,7 +517,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(1500);
 
             IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
@@ -529,7 +529,7 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
             login2.Click();
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(3000);
 
             var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
@@ -538,7 +538,7 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=postnummer]"));
             searchBar.SendKeys("Stora Coop Borås");
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(3000);
 
             searchBar.SendKeys(Keys.Enter);
@@ -547,7 +547,7 @@ namespace CEROSIFRTestVerktygSelenium
             var storeInfo = driver.FindElement(By.LinkText("Erbjudanden och butiksinfo"));
             storeInfo.Click();
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(3000);
 
             var actual = driver.FindElement(By.CssSelector("div[class=StoreSelector--headerDesktop] span[class=Link2-text]")).Text;
@@ -583,7 +583,7 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(1000);
 
-            driver.Manage().Window.FullScreen();
+            
             Thread.Sleep(3000);
 
             IWebElement recept = driver.FindElement(By.LinkText("Recept"));
@@ -603,7 +603,7 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement choosenRecipe = driver.FindElement(By.XPath("//a[@href='/recept/zucchinitzatziki/']"));
             choosenRecipe.Click();
 
-            driver.Manage().Window.FullScreen();
+            
 
             Thread.Sleep(1000);
             IList<IWebElement> likeButton = wait.Until(product =>
@@ -615,7 +615,7 @@ namespace CEROSIFRTestVerktygSelenium
             receptTwo.Click();
 
             Thread.Sleep(1500);
-            driver.Manage().Window.FullScreen();
+            
 
             Thread.Sleep(1500);
             IWebElement savedRecipes = driver.FindElement(By.CssSelector("p[class*=u-marginAz]"));
