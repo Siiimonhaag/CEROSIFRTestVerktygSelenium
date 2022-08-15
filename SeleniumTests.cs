@@ -17,7 +17,7 @@ namespace CEROSIFRTestVerktygSelenium
         ITestOutputHelper testOutput;
         IWebDriver driver = new ChromeDriver();
         DriverManager driverManager = new DriverManager();
-        string url = "https://www.coop.se/";
+        readonly string url = "https://www.coop.se/";
 
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
@@ -27,7 +27,7 @@ namespace CEROSIFRTestVerktygSelenium
             // Båda click nedan funkar!
             testOutput = _testOutput;
             driver.Navigate().GoToUrl(url);
-            Thread.Sleep(5000);
+            Thread.Sleep(3000);
             driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
             driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
@@ -64,7 +64,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
             searchBar.SendKeys("Kronfågel Majskyckling");
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
 
             searchBar.SendKeys(Keys.Enter);
             Thread.Sleep(3000);
