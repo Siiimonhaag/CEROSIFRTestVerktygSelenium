@@ -34,24 +34,6 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        public void FullscreenAndSearchForKetchup()
-        {
-            
-            IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
-            handlaOnline.Click();
-            driver.Manage().Window.FullScreen();
-            Thread.Sleep(1000);
-            IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
-            searchBar.SendKeys("Ketchup");
-            Thread.Sleep(2000);
-            searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(1500);
-            driver.Quit();
-            driver.Dispose();
-
-        }
-
-        [Fact]
         [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
