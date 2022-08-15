@@ -27,27 +27,10 @@ namespace CEROSIFRTestVerktygSelenium
             // Båda click nedan funkar!
             testOutput = _testOutput;
             driver.Navigate().GoToUrl(url);
+            Thread.Sleep(5000);
             driver.Manage().Window.FullScreen();
-            Thread.Sleep(2000);
-            driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
-
-        }
-
-        [Fact]
-        public void FullscreenAndSearchForKetchup()
-        {
-            
-            IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
-            handlaOnline.Click();
-            driver.Manage().Window.FullScreen();
-            Thread.Sleep(1000);
-            IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
-            searchBar.SendKeys("Ketchup");
-            Thread.Sleep(2000);
-            searchBar.SendKeys(Keys.Enter);
             Thread.Sleep(1500);
-            driver.Quit();
-            driver.Dispose();
+            driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
 
         }
 
