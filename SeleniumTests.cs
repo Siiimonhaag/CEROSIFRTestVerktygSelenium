@@ -51,19 +51,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            Thread.Sleep(1500);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(2000);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
             handlaOnline.Click();
@@ -71,7 +59,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
             searchBar.SendKeys("Kronfågel Majskyckling");
-            Thread.Sleep(2000);
 
             searchBar.SendKeys(Keys.Enter);
             Thread.Sleep(3000);
