@@ -582,7 +582,6 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
 
             Thread.Sleep(2000);
-
             var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
             onlineShop.Click();
 
@@ -590,17 +589,18 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=postnummer]"));
             searchBar.SendKeys("Stora Coop Borås");
 
+            Thread.Sleep(1000);
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
 
+            Thread.Sleep(2000);
             var storeInfo = driver.FindElement(By.LinkText("Erbjudanden och butiksinfo"));
             storeInfo.Click();
 
             Thread.Sleep(2000);
             var actual = driver.FindElement(By.CssSelector("div[class=StoreSelector--headerDesktop] span[class=Link2-text]")).Text;
-            string expected = "Katrinebergsgatan 6, MÖLNDAL";
+            string expected = "Enedalsg. 10, BORÅS";
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             Assert.Equal(expected, actual);
             testOutput.WriteLine("Expected result: " + expected + "\nActual result: " + actual);
 
