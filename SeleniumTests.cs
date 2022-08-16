@@ -19,12 +19,14 @@ namespace CEROSIFRTestVerktygSelenium
         IWebDriver driver;
         Helper helper;
         string url = "https://www.coop.se/";
+        Actions actions;
 
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
             options.AddArguments("--start-fullscreen");
             driver = new ChromeDriver(options);
             helper = new Helper(driver);
+            actions = new Actions(driver);
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
             // Båda click nedan funkar!
@@ -116,7 +118,6 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User Story ID 11", "Div")]
         public void ShoppingCartShowCorrectPriceDiscount()
         {
-            Actions actions = new Actions(driver);
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             Thread.Sleep(1500);
@@ -200,7 +201,6 @@ namespace CEROSIFRTestVerktygSelenium
                 {
                 }
             }
-
             IWebElement addIcon;
             for (int i = 0; i < quantity; i++)
             {
@@ -229,19 +229,17 @@ namespace CEROSIFRTestVerktygSelenium
 
             double discSubtraction = double.Parse(cartDiscountText) / 100;
 
+            //Töm kundkorgen innan dispose
+            helper.EmptyTheCart();
+
+            driver.Quit();
+            driver.Dispose();
+
             // Validera om kundvagnen visar rätt prisavdrag
             double expected = Math.Round(originalPrice * quantity - discountPrice, 2);
             double actual = discSubtraction;
             Assert.Equal(expected, actual);
-
-            //Töm kundkorgen innan dispose
-            helper.EmptyTheCart();
-
             testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
-            Thread.Sleep(1200);
-
-            driver.Quit();
-            driver.Dispose();
         }
 
         [Fact]
@@ -252,7 +250,6 @@ namespace CEROSIFRTestVerktygSelenium
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
 
-            driver.Manage().Window.FullScreen();
             Thread.Sleep(1000);
 
             IWebElement Searching = driver.FindElement(By.ClassName("Search-input"));
@@ -264,7 +261,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement viewProduct = driver.FindElement(By.XPath("//a[@aria-label='Baguette Vitlök 6-pack']"));
             viewProduct.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(3000);
 
             IWebElement addTheProduct = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
             addTheProduct.Click();
@@ -283,9 +280,6 @@ namespace CEROSIFRTestVerktygSelenium
             loginIn.Click();
             Thread.Sleep(1500);
 
-            driver.Manage().Window.FullScreen();
-            Thread.Sleep(1500);
-
             IWebElement addTheProduct2 = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
             addTheProduct2.Click();
             Thread.Sleep(1500);
@@ -296,9 +290,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement toTheRegister = driver.FindElement(By.XPath("//a[@data-test='minicart-gotocheckoutbutton']"));
             toTheRegister.Click();
-            Thread.Sleep(1500);
-
-            driver.Manage().Window.FullScreen();
             Thread.Sleep(1500);
 
             IWebElement moveForward = driver.FindElement(By.XPath("//button[@class='Button Button--green Button--radius Button--responsivePadding']"));
