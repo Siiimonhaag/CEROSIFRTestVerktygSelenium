@@ -246,11 +246,6 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement addTheProduct = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
             addTheProduct.Click();
             Thread.Sleep(2000);
-            
-            IWebElement addTheProduct2 = wait.Until(driver =>
-            driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']")));
-            addTheProduct2.Click();
-            Thread.Sleep(1500);
 
             IWebElement clickTheCartButton = driver.FindElement(By.XPath("//div[@class='CartButton-icon CartButton-icon--small']"));
             clickTheCartButton.Click();
@@ -300,7 +295,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
-            Thread.Sleep(1000);
+            Thread.Sleep(2000);
 
             IWebElement Search = driver.FindElement(By.ClassName("Search-input"));
             Search.SendKeys("Ädelost Blå eko");
@@ -369,7 +364,7 @@ namespace CEROSIFRTestVerktygSelenium
                 IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
                 menuRecept.Click();
             }
-            Thread.Sleep(2000);
+            Thread.Sleep(1500);
 
             //Navigate
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
