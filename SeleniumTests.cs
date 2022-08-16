@@ -97,14 +97,12 @@ namespace CEROSIFRTestVerktygSelenium
         public void ShoppingCartShowCorrectPriceDiscount()
         {
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
-
-            Thread.Sleep(1500);
+            Thread.Sleep(2000);
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             var onlineShop = driver.FindElement(By.LinkText("Handla online"));
             onlineShop.Click();
-
             Thread.Sleep(1200);
 
             IList<IWebElement> miniArticles = wait.Until(driver =>
@@ -228,7 +226,6 @@ namespace CEROSIFRTestVerktygSelenium
         {
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
-
             Thread.Sleep(1000);
 
             IWebElement Searching = driver.FindElement(By.ClassName("Search-input"));
@@ -240,24 +237,14 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement viewProduct = driver.FindElement(By.XPath("//a[@aria-label='Baguette Vitlök 6-pack']"));
             viewProduct.Click();
-            Thread.Sleep(3000);
+            Thread.Sleep(2000);
 
             IWebElement addTheProduct = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
             addTheProduct.Click();
+            Thread.Sleep(2000);
 
-            IWebElement clickloginIn = driver.FindElement(By.LinkText("Logga in"));
-            clickloginIn.Click();
-            Thread.Sleep(1000);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement loginIn = driver.FindElement(By.XPath("//button[@type='submit']"));
-            loginIn.Click();
-            Thread.Sleep(1500);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
+            Thread.Sleep(2000);
             
             IWebElement addTheProduct2 = wait.Until(driver =>
             driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']")));
@@ -293,7 +280,6 @@ namespace CEROSIFRTestVerktygSelenium
             var removeProduct = wait.Until(driver =>
                 driver.FindElement(By.CssSelector(".Cart-item button[class*=\"subtract\"]")));
                 removeProduct.Click();
-
             Thread.Sleep(1500);
 
             testOutput.WriteLine("shopForMoreInfo = " + shopForMoreInfo);
@@ -343,7 +329,6 @@ namespace CEROSIFRTestVerktygSelenium
                     Thread.Sleep(500);
                     stop++;
                 }
-            
             Thread.Sleep(2000);
 
             IWebElement ClickTime = driver.FindElement(By.ClassName("TimeslotCell-content"));
@@ -356,11 +341,9 @@ namespace CEROSIFRTestVerktygSelenium
             testOutput.WriteLine("Added 10pcs of 'Ädelost Blå Eko' in the shopping cart.\n" +
                 "Expected result: 10\n" +
                 "Actual result: " + actual);
-
             Thread.Sleep(1000);
 
             helper.EmptyTheCart();
-
             driver.Quit();
             driver.Dispose();
         }
@@ -431,19 +414,8 @@ namespace CEROSIFRTestVerktygSelenium
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
 
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            Thread.Sleep(1500);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(3000);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
+            Thread.Sleep(2000);
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
@@ -461,7 +433,6 @@ namespace CEROSIFRTestVerktygSelenium
                 IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
                 menuRecept.Click();
             }
-
             Thread.Sleep(1200);
 
             // Sök efter pasta och välj första bästa alternativ
@@ -510,6 +481,7 @@ namespace CEROSIFRTestVerktygSelenium
             driver.FindElement(By.CssSelector("button[class*='close']")));
             Thread.Sleep(1200);
             closeWindow.Click();
+            
             // Navigera till testkontot med inköpslistor
             Thread.Sleep(1200);
             js.ExecuteScript("document.querySelector('a[title=\"Mitt Coop\"]').click()");
@@ -517,23 +489,21 @@ namespace CEROSIFRTestVerktygSelenium
             wait.Until(driver =>
             driver.FindElement(By.LinkText("Mina inköpslistor"))).Click();
             Thread.Sleep(1200);
+
             IList<IWebElement> shoppingList = wait.Until(driver =>
             driver.FindElements(By.ClassName("Checkbox")));
             
             //Radera inköpslistan för att hålla testkontot städat
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Redigera\"]"))).Click();
-
             Thread.Sleep(2000);
 
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Ta bort inköpslistan\"]"))).Click();
-
             Thread.Sleep(1200);
 
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Radera\"]"))).Click();
-
             Thread.Sleep(500);
 
             driver.Quit();
@@ -585,20 +555,9 @@ namespace CEROSIFRTestVerktygSelenium
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
+            Thread.Sleep(2000);
 
-            Thread.Sleep(1500);
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            Thread.Sleep(1000);
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(1000);
             try
             {
                 IWebElement recept = driver.FindElement(By.LinkText("Recept"));
