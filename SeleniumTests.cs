@@ -509,23 +509,15 @@ namespace CEROSIFRTestVerktygSelenium
             closeWindow.Click();
             // Navigera till testkontot med inköpslistor
             Thread.Sleep(1200);
-            js.ExecuteScript();
-            actions.Click(driver.FindElement(By.CssSelector("a[title = 'Mitt Coop']")));
-            actions.Perform();
+            js.ExecuteScript("document.querySelector('a[title=\"Mitt Coop\"]').click()");
 
             wait.Until(driver =>
             driver.FindElement(By.LinkText("Mina inköpslistor"))).Click();
             Thread.Sleep(1200);
             IList<IWebElement> shoppingList = wait.Until(driver =>
             driver.FindElements(By.ClassName("Checkbox")));
-            // Validera testet med att kolla om det finns rätt antal ingredienser i listan kontra receptet
-            int expected = recipeQuantity;
-            int actual = shoppingList.Count;
-
-            Assert.Equal(expected, actual);
-
-            testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
-            //Efter testet: Radera inköpslistan för att hålla testkontot städat
+            
+            //Radera inköpslistan för att hålla testkontot städat
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Redigera\"]"))).Click();
 
@@ -543,6 +535,13 @@ namespace CEROSIFRTestVerktygSelenium
 
             driver.Quit();
             driver.Dispose();
+
+            // Validera testet med att kolla om det finns rätt antal ingredienser i listan kontra receptet
+            int expected = recipeQuantity;
+            int actual = shoppingList.Count;
+            testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
+
+            Assert.Equal(expected, actual);
         }
         [Fact]
         [Trait("User story ID 8", "Search")]
