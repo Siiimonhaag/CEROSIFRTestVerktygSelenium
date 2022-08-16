@@ -448,6 +448,8 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 7", "Input, Button, Anchor")]
         public void AddingIngredientsFromRecipeIsVisibleInShoppingList()
         {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
             Thread.Sleep(1500);
@@ -510,15 +512,14 @@ namespace CEROSIFRTestVerktygSelenium
             // Lägg till i ett klick alla ingredienser till en inköpslista
             var addAllIngredients = wait.Until(driver =>
             driver.FindElement(By.CssSelector("div[class='js-shoppingList'] button")));
-
             /*
              * Selenium kan inte genom vanliga medel klicka på knappen pga av att elementet
              * är inne i ett "gömt" tillstånd, trots att den är fullt synlig och klickbar för
              * en användare. Lösningen blir att låta Javascript klicka åt oss istället för Selenium
              */
-            //driver.ExecuteScript
-                //("document.querySelector('div[class=\"js-shoppingList\"] button').click()");
-
+            js.ExecuteScript("document.querySelector('div[class=\"js-shoppingList\"] button').click()");
+            Thread.Sleep(1200);
+            
             var newShoppingListButton = wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()='+ Lägg till i ny lista']")));
             Thread.Sleep(1200);
@@ -529,7 +530,10 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1200);
             closeWindow.Click();
             // Navigera till testkontot med inköpslistor
-            //driver.ExecuteScript("document.querySelector(\"a[title = 'Mitt Coop']\").click()");
+            Thread.Sleep(1200);
+            js.ExecuteScript();
+            actions.Click(driver.FindElement(By.CssSelector("a[title = 'Mitt Coop']")));
+            actions.Perform();
 
             wait.Until(driver =>
             driver.FindElement(By.LinkText("Mina inköpslistor"))).Click();
