@@ -368,22 +368,7 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 5", "Li, A, Input, Button, Span")]
         public void NavigateWithSearchForRecipes()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            
-            Thread.Sleep(1500);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(2000);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             //Check if the Linktext shows up. If not navigate to menu
             try
@@ -564,18 +549,7 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 8", "Search")]
         public void SearchForSpecificStoreInfo()
         {
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            Thread.Sleep(1500);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             Thread.Sleep(2000);
             var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
