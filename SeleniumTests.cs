@@ -368,6 +368,7 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(2000);
 
+            //Check if the Linktext shows up. If not navigate to menu
             try
             {
                 IWebElement recept = driver.FindElement(By.LinkText("Recept"));
@@ -383,6 +384,7 @@ namespace CEROSIFRTestVerktygSelenium
             }
             Thread.Sleep(2000);
 
+            //Navigate
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
             Thread.Sleep(1500);
 
@@ -410,7 +412,7 @@ namespace CEROSIFRTestVerktygSelenium
             Assert.NotNull(result.Text);
             var productView = driver.FindElement(By.CssSelector("article a[href='/recept/vegetarisk-chiligryta/']"));
 
-            testOutput.WriteLine(result.Text);
+            testOutput.WriteLine("Number of result: " + result.Text);
             Thread.Sleep(1500);
 
             productView.Click();
