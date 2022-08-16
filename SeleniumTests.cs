@@ -74,24 +74,24 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(2000);
 
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Majskyckling']"));
             addProduct.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
 
             IWebElement plusButton = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             plusButton.Click();
-            Thread.Sleep(2000);
-
+            Thread.Sleep(2500);
 
             IWebElement shoppingCart = driver.FindElement(By.XPath("//button[@aria-label='kundvagn']"));
             shoppingCart.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
 
             IWebElement increaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             increaseQuantity.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
+
             string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
             string expected = "2";
             Assert.Equal(expected,actual);
@@ -99,14 +99,8 @@ namespace CEROSIFRTestVerktygSelenium
                 "Expected result: 2\n" +
                 "Actual result: " + actual);
 
-            for (int i = 0; i < 2; i++)
-            {
-                IWebElement decreaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Minska antal']"));
-                decreaseQuantity.Click();
-                Thread.Sleep(750);
-
-            }
-            Thread.Sleep(2000);
+            helper.EmptyTheCart();
+            Thread.Sleep(500);
 
             driver.Quit();
             driver.Dispose();
@@ -400,7 +394,6 @@ namespace CEROSIFRTestVerktygSelenium
                 IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
                 menuRecept.Click();
             }
-
             Thread.Sleep(2000);
 
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
@@ -425,19 +418,15 @@ namespace CEROSIFRTestVerktygSelenium
             //driver.ExecuteScript("document.querySelector(\"div[class*='Hero-content']\").scrollIntoView()");
 
             Thread.Sleep(1500);
-
             var result = driver.FindElement(By.XPath("//p/b"));
 
             Assert.NotNull(result.Text);
-
             var productView = driver.FindElement(By.CssSelector("article a[href='/recept/vegetarisk-chiligryta/']"));
 
             testOutput.WriteLine(result.Text);
-
             Thread.Sleep(1500);
 
             productView.Click();
-
             Thread.Sleep(1500);
 
             driver.Quit();
