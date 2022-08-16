@@ -224,6 +224,10 @@ namespace CEROSIFRTestVerktygSelenium
         public void ShopForASmallerAmountThan500()
 
         {
+
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
+            Thread.Sleep(2000);
+
             var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
             HandlaOnline.Click();
             Thread.Sleep(1000);
@@ -241,9 +245,6 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement addTheProduct = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
             addTheProduct.Click();
-            Thread.Sleep(2000);
-
-            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
             Thread.Sleep(2000);
             
             IWebElement addTheProduct2 = wait.Until(driver =>
