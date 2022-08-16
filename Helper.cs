@@ -14,9 +14,11 @@ namespace CEROSIFRTestVerktygSelenium
     public class Helper
     {
         public IWebDriver driver;
+        WebDriverWait wait;
         public Helper(IWebDriver _driver)
         {
             driver = _driver;
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
         }
         public void LogInToWebsite(string email, string password)
         {
@@ -34,6 +36,20 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
             login2.Click();
             Thread.Sleep(3000);
+        }
+
+        public void EmptyTheCart()
+        {
+            var emptyBasketButton = wait.Until(driver =>
+            driver.FindElement(By.CssSelector("button[data-test*=emptycartbutton]")));
+            Thread.Sleep(1200);
+            emptyBasketButton.Click();
+
+            var confirmButton = wait.Until(driver =>
+            driver.FindElement(By.XPath(
+                "//div[contains(@class, 'Cart-notice')]/div/button[contains(text(), 'Töm')]")));
+            Thread.Sleep(1200);
+            confirmButton.Click();
         }
     }
 }

@@ -17,26 +17,27 @@ namespace CEROSIFRTestVerktygSelenium
         ITestOutputHelper testOutput;
         ChromeOptions options = new ChromeOptions();
         IWebDriver driver;
+        Helper helper;
         string url = "https://www.coop.se/";
 
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
             options.AddArguments("--start-fullscreen");
             driver = new ChromeDriver(options);
+            helper = new Helper(driver);
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
             // Båda click nedan funkar!
             testOutput = _testOutput;
-            driver.Navigate().GoToUrl(url);
+
             try
             {
+                driver.Navigate().GoToUrl(url);
                 Thread.Sleep(3000);
                 driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
             }
-            catch (NoSuchWindowException)
+            catch (Exception)
             {
-                driver.Navigate().Refresh();
-                Thread.Sleep(3000);
                 driver.FindElement(By.XPath("//*[@id='cmpbntyestxt']")).Click();
             }
         }
@@ -115,7 +116,6 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User Story ID 11", "Div")]
         public void ShoppingCartShowCorrectPriceDiscount()
         {
-            Helper helper = new Helper(driver);
             Actions actions = new Actions(driver);
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
@@ -158,13 +158,10 @@ namespace CEROSIFRTestVerktygSelenium
             double originalPrice = 0;
             int incentive = 0;
 
-            
-
             for (int i = 0; i < 2; i++)
             {
                 try
                 {
-                    
                     Thread.Sleep(1200);
                     string quantityText = wait.Until(driver =>
                     driver.FindElement(By.ClassName("Splash-pricePre"))).Text.Substring(0, 1);
@@ -235,20 +232,10 @@ namespace CEROSIFRTestVerktygSelenium
             // Validera om kundvagnen visar rätt prisavdrag
             double expected = Math.Round(originalPrice * quantity - discountPrice, 2);
             double actual = discSubtraction;
-            testOutput.WriteLine("originalPrice multiplied by 2: " + originalPrice * 2);
             Assert.Equal(expected, actual);
 
             //Töm kundkorgen innan dispose
-            var emptyBasketButton = wait.Until(driver =>
-            driver.FindElement(By.CssSelector("button[data-test*=emptycartbutton]")));
-            Thread.Sleep(1200);
-            emptyBasketButton.Click();
-
-            var confirmButton = wait.Until(driver =>
-            driver.FindElement(By.XPath(
-                "//div[contains(@class, 'Cart-notice')]/div/button[contains(text(), 'Töm')]")));
-            Thread.Sleep(1200);
-            confirmButton.Click();
+            helper.EmptyTheCart();
 
             testOutput.WriteLine("Expected: " + expected + "\nActual: " + actual);
             Thread.Sleep(1200);
