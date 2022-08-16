@@ -294,14 +294,12 @@ namespace CEROSIFRTestVerktygSelenium
             moveForward.Click();
             Thread.Sleep(1500);
 
-            string actual = driver.FindElement(By.XPath("//span[@class='u-textWeightBold']")).GetAttribute("value").ToString();
-            string expected = "500";
-            Assert.Equal(expected, actual);
-            testOutput.WriteLine("Text här: .\n" +
-                "Expected result: 500\n" +
-                "Actual result: " + actual);
-
+            bool shopForMoreInfo = driver.FindElement(By.ClassName("Notice-content")).Text.Contains("Handla för ytterligare");
+            Assert.True(shopForMoreInfo);
+            
             Thread.Sleep(1000);
+
+            testOutput.WriteLine("shopForMoreInfo = " + shopForMoreInfo);
 
             driver.Quit();
             driver.Dispose();
@@ -361,6 +359,8 @@ namespace CEROSIFRTestVerktygSelenium
                 "Actual result: " + actual);
 
             Thread.Sleep(1000);
+
+            helper.EmptyTheCart();
 
             driver.Quit();
             driver.Dispose();
