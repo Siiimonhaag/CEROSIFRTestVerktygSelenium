@@ -610,20 +610,9 @@ namespace CEROSIFRTestVerktygSelenium
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-
-            Thread.Sleep(1500);
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
             Thread.Sleep(1000);
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
 
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(1000);
             try
             {
                 IWebElement recept = driver.FindElement(By.LinkText("Recept"));
