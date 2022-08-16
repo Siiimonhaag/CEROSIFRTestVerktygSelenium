@@ -20,12 +20,14 @@ namespace CEROSIFRTestVerktygSelenium
         Helper helper;
         string url = "https://www.coop.se/";
         Actions actions;
+        WebDriverWait wait;
 
         public SeleniumTests(ITestOutputHelper _testOutput)
         {
             options.AddArguments("--start-fullscreen");
             driver = new ChromeDriver(options);
             helper = new Helper(driver);
+            wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             actions = new Actions(driver);
             // Konstruktor för att
             // Klicka på acceptera kakor varje gång vi kör ett test
@@ -48,9 +50,6 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 1","Input, Button, Anchor")]
         public void ChangeQuantityInTheShoppingCart()
         {
-
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
             helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
@@ -258,8 +257,9 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement loginIn = driver.FindElement(By.XPath("//button[@type='submit']"));
             loginIn.Click();
             Thread.Sleep(1500);
-
-            IWebElement addTheProduct2 = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
+            
+            IWebElement addTheProduct2 = wait.Until(driver =>
+            driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']")));
             addTheProduct2.Click();
             Thread.Sleep(1500);
 
@@ -271,19 +271,36 @@ namespace CEROSIFRTestVerktygSelenium
             toTheRegister.Click();
             Thread.Sleep(1500);
 
-            IWebElement moveForward = driver.FindElement(By.XPath("//button[@class='Button Button--green Button--radius Button--responsivePadding']"));
-            moveForward.Click();
+            IWebElement moveForward;
+            try
+            {
+                moveForward = driver.FindElement(By.XPath("//button[@class='Button Button--green Button--radius Button--responsivePadding']"));
+                moveForward.Click();
+                testOutput.WriteLine("Inne i Try-fältet");
+            }
+            catch (Exception)
+            {
+                moveForward = driver.FindElement(By.XPath("//nav/button[text()=\"Gå vidare\"]"));
+                moveForward.Click();
+                testOutput.WriteLine("Inne i Catch-fältet");
+            }
             Thread.Sleep(1500);
 
-            bool shopForMoreInfo = driver.FindElement(By.ClassName("Notice-content")).Text.Contains("Handla för ytterligare");
-            Assert.True(shopForMoreInfo);
+            bool shopForMoreInfo = driver.FindElement(By.ClassName("Notice-content")).Text
+                .Contains("Handla för ytterligare");
             
-            Thread.Sleep(1000);
+            var removeProduct = wait.Until(driver =>
+                driver.FindElement(By.CssSelector(".Cart-item button[class*=\"subtract\"]")));
+                removeProduct.Click();
+
+            Thread.Sleep(1500);
 
             testOutput.WriteLine("shopForMoreInfo = " + shopForMoreInfo);
 
             driver.Quit();
             driver.Dispose();
+
+            Assert.True(shopForMoreInfo);
         }
 
         [Fact]
