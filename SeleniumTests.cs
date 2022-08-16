@@ -195,6 +195,7 @@ namespace CEROSIFRTestVerktygSelenium
             miniCart.Click();
 
             //Hämta avdraget pris och totalpriset
+            Thread.Sleep(2000);
             IList<IWebElement> cartSummary;
             do
             {
