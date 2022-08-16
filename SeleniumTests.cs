@@ -141,7 +141,7 @@ namespace CEROSIFRTestVerktygSelenium
             {
                 try
                 {
-                    Thread.Sleep(1200);
+                    Thread.Sleep(2000);
                     string quantityText = wait.Until(driver =>
                     driver.FindElement(By.ClassName("Splash-pricePre"))).Text.Substring(0, 1);
                     quantity = int.Parse(quantityText.Trim());
@@ -538,7 +538,7 @@ namespace CEROSIFRTestVerktygSelenium
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Redigera\"]"))).Click();
 
-            Thread.Sleep(1200);
+            Thread.Sleep(2000);
 
             wait.Until(driver =>
             driver.FindElement(By.XPath("//button[text()=\"Ta bort inköpslistan\"]"))).Click();
@@ -564,8 +564,6 @@ namespace CEROSIFRTestVerktygSelenium
         [Trait("User story ID 8", "Search")]
         public void SearchForSpecificStoreInfo()
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
             logIn.Click();
             Thread.Sleep(1500);
