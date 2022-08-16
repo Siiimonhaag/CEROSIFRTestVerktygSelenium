@@ -51,19 +51,7 @@ namespace CEROSIFRTestVerktygSelenium
 
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
-            IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
-            logIn.Click();
-            Thread.Sleep(1500);
-
-            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
-            enterEmail.SendKeys("testcoop123@hotmail.com");
-
-            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
-            enterPassword.SendKeys("Cerosifr123!");
-
-            IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
-            login2.Click();
-            Thread.Sleep(2000);
+            helper.LogInToWebsite("testcoop123@hotmail.com", "Cerosifr123!");
 
             IWebElement handlaOnline = driver.FindElement(By.LinkText("Handla online"));
             handlaOnline.Click();
@@ -71,27 +59,26 @@ namespace CEROSIFRTestVerktygSelenium
 
             IWebElement searchBar = driver.FindElement(By.ClassName("Search-input"));
             searchBar.SendKeys("Kronfågel Majskyckling");
-            Thread.Sleep(2000);
 
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
+            Thread.Sleep(3000);
 
             IWebElement addProduct = driver.FindElement(By.XPath("//a[@aria-label='Bröstfilé Majskyckling']"));
             addProduct.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
 
             IWebElement plusButton = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             plusButton.Click();
-            Thread.Sleep(2000);
-
+            Thread.Sleep(2500);
 
             IWebElement shoppingCart = driver.FindElement(By.XPath("//button[@aria-label='kundvagn']"));
             shoppingCart.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
 
             IWebElement increaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Öka antal']"));
             increaseQuantity.Click();
-            Thread.Sleep(2000);
+            Thread.Sleep(2500);
+
             string actual = driver.FindElement(By.XPath("//input[@type='numeric']")).GetAttribute("value").ToString();
             string expected = "2";
             Assert.Equal(expected,actual);
@@ -99,14 +86,8 @@ namespace CEROSIFRTestVerktygSelenium
                 "Expected result: 2\n" +
                 "Actual result: " + actual);
 
-            for (int i = 0; i < 2; i++)
-            {
-                IWebElement decreaseQuantity = driver.FindElement(By.XPath("//button[@aria-label='Minska antal']"));
-                decreaseQuantity.Click();
-                Thread.Sleep(750);
-
-            }
-            Thread.Sleep(2000);
+            helper.EmptyTheCart();
+            Thread.Sleep(500);
 
             driver.Quit();
             driver.Dispose();
@@ -294,14 +275,12 @@ namespace CEROSIFRTestVerktygSelenium
             moveForward.Click();
             Thread.Sleep(1500);
 
-            string actual = driver.FindElement(By.XPath("//span[@class='u-textWeightBold']")).GetAttribute("value").ToString();
-            string expected = "500";
-            Assert.Equal(expected, actual);
-            testOutput.WriteLine("Text här: .\n" +
-                "Expected result: 500\n" +
-                "Actual result: " + actual);
-
+            bool shopForMoreInfo = driver.FindElement(By.ClassName("Notice-content")).Text.Contains("Handla för ytterligare");
+            Assert.True(shopForMoreInfo);
+            
             Thread.Sleep(1000);
+
+            testOutput.WriteLine("shopForMoreInfo = " + shopForMoreInfo);
 
             driver.Quit();
             driver.Dispose();
@@ -362,12 +341,14 @@ namespace CEROSIFRTestVerktygSelenium
 
             Thread.Sleep(1000);
 
+            helper.EmptyTheCart();
+
             driver.Quit();
             driver.Dispose();
         }
 
         [Fact]
-        [Trait("User story ID 5", "Search")]
+        [Trait("User story ID 5", "Li, A, Input, Button, Span")]
         public void NavigateWithSearchForRecipes()
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -400,7 +381,6 @@ namespace CEROSIFRTestVerktygSelenium
                 IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
                 menuRecept.Click();
             }
-
             Thread.Sleep(2000);
 
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
@@ -425,19 +405,15 @@ namespace CEROSIFRTestVerktygSelenium
             //driver.ExecuteScript("document.querySelector(\"div[class*='Hero-content']\").scrollIntoView()");
 
             Thread.Sleep(1500);
-
             var result = driver.FindElement(By.XPath("//p/b"));
 
             Assert.NotNull(result.Text);
-
             var productView = driver.FindElement(By.CssSelector("article a[href='/recept/vegetarisk-chiligryta/']"));
 
             testOutput.WriteLine(result.Text);
-
             Thread.Sleep(1500);
 
             productView.Click();
-
             Thread.Sleep(1500);
 
             driver.Quit();
@@ -445,7 +421,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 7", "Input, Button, Anchor")]
+        [Trait("User story ID 7", "Li, Input, Button, Anchor")]
         public void AddingIngredientsFromRecipeIsVisibleInShoppingList()
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
@@ -586,7 +562,6 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
 
             Thread.Sleep(2000);
-
             var onlineShop = driver.FindElement(By.LinkText("Butiker & erbjudanden"));
             onlineShop.Click();
 
@@ -594,17 +569,18 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=postnummer]"));
             searchBar.SendKeys("Stora Coop Borås");
 
+            Thread.Sleep(1000);
             searchBar.SendKeys(Keys.Enter);
-            Thread.Sleep(2000);
 
+            Thread.Sleep(2000);
             var storeInfo = driver.FindElement(By.LinkText("Erbjudanden och butiksinfo"));
             storeInfo.Click();
 
             Thread.Sleep(2000);
             var actual = driver.FindElement(By.CssSelector("div[class=StoreSelector--headerDesktop] span[class=Link2-text]")).Text;
-            string expected = "Katrinebergsgatan 6, MÖLNDAL";
+            string expected = "Enedalsg. 10, BORÅS";
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1000);
             Assert.Equal(expected, actual);
             testOutput.WriteLine("Expected result: " + expected + "\nActual result: " + actual);
 
@@ -613,7 +589,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 6", "Input, A, Button, H1, H3, P")]
+        [Trait("User story ID 6", "Li, Input, A, Button, H1, H3, P")]
         public void SaveRecipe()
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
