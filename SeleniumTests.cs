@@ -233,7 +233,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1000);
 
             Searching.SendKeys(Keys.Enter);
-            Thread.Sleep(1000);
+            Thread.Sleep(2500);
 
             IWebElement viewProduct = driver.FindElement(By.XPath("//a[@aria-label='Baguette Vitlök 6-pack']"));
             viewProduct.Click();
@@ -329,8 +329,8 @@ namespace CEROSIFRTestVerktygSelenium
                     Thread.Sleep(500);
                     stop++;
                 }
-            Thread.Sleep(2000);
 
+            Thread.Sleep(3500);
             IWebElement ClickTime = driver.FindElement(By.ClassName("TimeslotCell-content"));
             ClickTime.SendKeys(Keys.Enter);
             Thread.Sleep(2000);
