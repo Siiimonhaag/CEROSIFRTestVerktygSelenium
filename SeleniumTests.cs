@@ -367,7 +367,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 5", "Search")]
+        [Trait("User story ID 5", "Li, A, Input, Button, Span")]
         public void NavigateWithSearchForRecipes()
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
@@ -445,7 +445,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 7", "Input, Button, Anchor")]
+        [Trait("User story ID 7", "Li, Input, Button, Anchor")]
         public void AddingIngredientsFromRecipeIsVisibleInShoppingList()
         {
             IWebElement logIn = driver.FindElement(By.XPath("//a[@title='Logga in / Mitt Coop']"));
@@ -609,7 +609,7 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
-        [Trait("User story ID 6", "Input, A, Button, H1, H3, P")]
+        [Trait("User story ID 6", "Li, Input, A, Button, H1, H3, P")]
         public void SaveRecipe()
         {
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
