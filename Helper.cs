@@ -50,7 +50,7 @@ namespace CEROSIFRTestVerktygSelenium
                 "//div[contains(@class, 'Cart-notice')]/div/button[contains(text(), 'Töm')]")));
             Thread.Sleep(1200);
             confirmButton.Click();
-            Thread.Sleep(500);
+            Thread.Sleep(1500);
         }
     }
 }
