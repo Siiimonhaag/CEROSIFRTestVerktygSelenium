@@ -396,9 +396,21 @@ namespace CEROSIFRTestVerktygSelenium
             login2.Click();
             Thread.Sleep(2000);
 
-            var onlineShop = driver.FindElement(By.LinkText("Recept"));
-            onlineShop.Click();
-            Thread.Sleep(2500);
+            try
+            {
+                IWebElement recept = driver.FindElement(By.LinkText("Recept"));
+                recept.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                IWebElement menu = driver.FindElement(By.CssSelector("button[aria-label=Meny]"));
+                menu.Click();
+                Thread.Sleep(1000);
+                IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
+                menuRecept.Click();
+            }
+
+            Thread.Sleep(2000);
 
             driver.FindElement(By.XPath("//button/span[text()='Måltid']")).Click();
             Thread.Sleep(1500);
@@ -462,12 +474,21 @@ namespace CEROSIFRTestVerktygSelenium
             var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
 
             // Navigera till recept
-            
-            Thread.Sleep(1500);
-            var recipeTab = wait.Until(driver =>
-            driver.FindElement(By.LinkText("Recept")));
+            try
+            {
+                IWebElement recept = driver.FindElement(By.LinkText("Recept"));
+                recept.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                IWebElement menu = driver.FindElement(By.CssSelector("button[aria-label=Meny]"));
+                menu.Click();
+                Thread.Sleep(1000);
+                IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
+                menuRecept.Click();
+            }
+
             Thread.Sleep(1200);
-            recipeTab.Click();
 
             // Sök efter pasta och välj första bästa alternativ
             var pastaFilter = wait.Until(driver =>
@@ -612,11 +633,22 @@ namespace CEROSIFRTestVerktygSelenium
             IWebElement login2 = driver.FindElement(By.XPath("//button[@type='submit']"));
             login2.Click();
             Thread.Sleep(1000);
+            try
+            {
+                IWebElement recept = driver.FindElement(By.LinkText("Recept"));
+                recept.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                IWebElement menu = driver.FindElement(By.CssSelector("button[aria-label=Meny]"));
+                menu.Click();
+                Thread.Sleep(1000);
+                IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
+                menuRecept.Click();
+            }
+            
 
-            IWebElement recept = driver.FindElement(By.LinkText("Recept"));
-            recept.Click();
-
-            Thread.Sleep(2000);
+            Thread.Sleep(1500);
             IWebElement searchBar = driver.FindElement(By.CssSelector("input[placeholder*=filter]"));
             searchBar.Click();
 
@@ -626,7 +658,7 @@ namespace CEROSIFRTestVerktygSelenium
             Thread.Sleep(1000);
             searchBar.SendKeys(Keys.Enter);
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1500);
             IWebElement choosenRecipe = driver.FindElement(By.XPath("//a[@href='/recept/zucchinitzatziki/']"));
             choosenRecipe.Click();
 
@@ -636,8 +668,19 @@ namespace CEROSIFRTestVerktygSelenium
             likeButton[1].Click();
 
             Thread.Sleep(1500);
-            IWebElement receptTwo = driver.FindElement(By.LinkText("Recept"));
-            receptTwo.Click();
+            try
+            {
+                IWebElement recept = driver.FindElement(By.LinkText("Recept"));
+                recept.Click();
+            }
+            catch (NoSuchElementException)
+            {
+                IWebElement menu = driver.FindElement(By.CssSelector("button[aria-label=Meny]"));
+                menu.Click();
+                Thread.Sleep(1000);
+                IWebElement menuRecept = driver.FindElement(By.CssSelector("li[class*=link2]"));
+                menuRecept.Click();
+            }
 
             Thread.Sleep(1500);
             IWebElement savedRecipes = driver.FindElement(By.CssSelector("p[class*=u-marginAz]"));
