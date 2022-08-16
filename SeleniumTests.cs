@@ -245,6 +245,80 @@ namespace CEROSIFRTestVerktygSelenium
         }
 
         [Fact]
+        [Trait("User story ID 2", "Anchor, Button, Input, Div")]
+        public void ShopForASmallerAmountThan500()
+
+        {
+            var HandlaOnline = driver.FindElement(By.LinkText("Handla online"));
+            HandlaOnline.Click();
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1000);
+
+            IWebElement Searching = driver.FindElement(By.ClassName("Search-input"));
+            Searching.SendKeys("Baguette Vitlök 6-pack");
+            Thread.Sleep(1000);
+
+            Searching.SendKeys(Keys.Enter);
+            Thread.Sleep(1000);
+
+            IWebElement viewProduct = driver.FindElement(By.XPath("//a[@aria-label='Baguette Vitlök 6-pack']"));
+            viewProduct.Click();
+            Thread.Sleep(1000);
+
+            IWebElement addTheProduct = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
+            addTheProduct.Click();
+
+            IWebElement clickloginIn = driver.FindElement(By.LinkText("Logga in"));
+            clickloginIn.Click();
+            Thread.Sleep(1000);
+
+            IWebElement enterEmail = driver.FindElement(By.XPath("//input[@id='loginEmail']"));
+            enterEmail.SendKeys("testcoop123@hotmail.com");
+
+            IWebElement enterPassword = driver.FindElement(By.XPath("//input[@id='loginPassword']"));
+            enterPassword.SendKeys("Cerosifr123!");
+
+            IWebElement loginIn = driver.FindElement(By.XPath("//button[@type='submit']"));
+            loginIn.Click();
+            Thread.Sleep(1500);
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            IWebElement addTheProduct2 = driver.FindElement(By.XPath("//button[@class='AddToCart-button AddToCart-button--add']"));
+            addTheProduct2.Click();
+            Thread.Sleep(1500);
+
+            IWebElement clickTheCartButton = driver.FindElement(By.XPath("//div[@class='CartButton-icon CartButton-icon--small']"));
+            clickTheCartButton.Click();
+            Thread.Sleep(1500);
+
+            IWebElement toTheRegister = driver.FindElement(By.XPath("//a[@data-test='minicart-gotocheckoutbutton']"));
+            toTheRegister.Click();
+            Thread.Sleep(1500);
+
+            driver.Manage().Window.FullScreen();
+            Thread.Sleep(1500);
+
+            IWebElement moveForward = driver.FindElement(By.XPath("//button[@class='Button Button--green Button--radius Button--responsivePadding']"));
+            moveForward.Click();
+            Thread.Sleep(1500);
+
+            string actual = driver.FindElement(By.XPath("//span[@class='u-textWeightBold']")).GetAttribute("value").ToString();
+            string expected = "500";
+            Assert.Equal(expected, actual);
+            testOutput.WriteLine("Text här: .\n" +
+                "Expected result: 500\n" +
+                "Actual result: " + actual);
+
+            Thread.Sleep(1000);
+
+            driver.Quit();
+            driver.Dispose();
+        }
+
+        [Fact]
         [Trait("User story ID 3","Input")]
         public void Add10pcsDirectlyOnInputOfTheProduct()
         {
